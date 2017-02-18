@@ -2,6 +2,7 @@ package com.example.sandyl.todoapp_materialdesign;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,9 +40,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
 
+
         Todo currentTodo = todos.get(position);
+        String currentTodoPriority = currentTodo.setPriority(currentTodo.priority);
         holder.taskView.setText(currentTodo.text);
-        holder.priorityTextView.setText(currentTodo.setPriority(currentTodo.priority));
+        holder.priorityTextView.setText(currentTodoPriority);
+        holder.priorityTextView.setTextColor(Color.parseColor(setColor(currentTodoPriority)));
 
     }
 
@@ -63,6 +67,27 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
             taskView = (TextView) itemView.findViewById(R.id.taskTextView);
             priorityTextView = (TextView) itemView.findViewById(R.id.priorityTextView);
         }
+    }
+
+    public String setColor(String priority) {
+
+        String priorityColor = "";
+
+        switch (priority) {
+
+            case "Medium":
+                priorityColor = "#FFD700";
+                break;
+
+            case "High":
+                priorityColor = "#FF0000";
+                break;
+
+            default:
+                System.out.println("");
+                break;
+        }
+        return  priorityColor;
     }
 
 }
