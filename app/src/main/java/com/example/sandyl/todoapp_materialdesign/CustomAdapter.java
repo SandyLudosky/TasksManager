@@ -32,10 +32,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
     class ItemViewHolder extends RecyclerView.ViewHolder {
 
         public TextView taskView;
+        public TextView priorityTextView;
 
 
         public ItemViewHolder(View itemView) {
             super(itemView);
+
+            taskView = (TextView) itemView.findViewById(R.id.taskTextView);
+            priorityTextView = (TextView) itemView.findViewById(R.id.priorityTextView)
         }
     }
 
