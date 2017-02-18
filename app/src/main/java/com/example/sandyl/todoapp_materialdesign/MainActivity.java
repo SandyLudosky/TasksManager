@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
             Todo todo = new Todo();
             todo.text = tasks.get(i);
-            todo.priority = "low";
+            todo.priority = Todo.Priority.MEDIUM;
 
             Log.d("TAG", todo.text);
             data.add(todo);

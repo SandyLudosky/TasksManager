@@ -39,10 +39,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
 
-
         Todo currentTodo = todos.get(position);
         holder.taskView.setText(currentTodo.text);
-        holder.priorityTextView.setText(currentTodo.priority);
+        holder.priorityTextView.setText(currentTodo.setPriority(currentTodo.priority));
 
     }
 

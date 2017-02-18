@@ -6,13 +6,43 @@ package com.example.sandyl.todoapp_materialdesign;
 
 public class Todo {
 
-    String text;
-    String priority;
+    //enum
+    public enum Priority {
+        MEDIUM,
+        HIGH
+    }
 
+    //properties
+    public String text;
+    public Priority priority;
+
+
+    //constructors
     public Todo() {}
 
-    public Todo(String text, String priority) {
+    public Todo(String text) {
         this.text = text;
-        this.priority = priority;
+    }
+
+    //methods
+    public String setPriority(Priority priority) {
+
+        String todoPriority = "";
+
+        switch (priority) {
+            case MEDIUM:
+                todoPriority = "Medium";
+                break;
+
+            case HIGH:
+                todoPriority = "High";
+                break;
+
+            default:
+                todoPriority = "";
+                break;
+        }
+
+        return  todoPriority;
     }
 }
