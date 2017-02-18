@@ -17,8 +17,10 @@ import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHolder> {
 
+
     private LayoutInflater inflater;
     List<Todo> todos = Collections.emptyList();
+
 
 
     public CustomAdapter(Context context, List<Todo> data) {
@@ -37,7 +39,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
 
-        Todo currentTodo = new Todo();
+
+        Todo currentTodo = todos.get(position);
         holder.taskView.setText(currentTodo.text);
         holder.priorityTextView.setText(currentTodo.priority);
 
@@ -45,7 +48,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
     @Override
     public int getItemCount() {
-        return 0;
+        return todos.size();
     }
 
 
