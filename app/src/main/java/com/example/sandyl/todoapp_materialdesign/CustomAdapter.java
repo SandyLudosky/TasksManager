@@ -1,22 +1,25 @@
 package com.example.sandyl.todoapp_materialdesign;
 
+
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * Created by sandyl on 2017-02-18.
  */
 
-public class CustomAdapter extends RecyclerView.Adapter {
+public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHolder> {
 
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return null;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(ItemViewHolder holder, int position) {
 
     }
 
@@ -24,4 +27,16 @@ public class CustomAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return 0;
     }
+
+
+    class ItemViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView taskView;
+
+
+        public ItemViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
 }
