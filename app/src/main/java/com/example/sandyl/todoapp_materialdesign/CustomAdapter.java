@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by sandyl on 2017-02-18.
  */
@@ -15,10 +18,13 @@ import android.widget.TextView;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHolder> {
 
     private LayoutInflater inflater;
+    List<Todo> todos = Collections.emptyList();
 
 
-    public CustomAdapter(Context context) {
+    public CustomAdapter(Context context, List<Todo> data) {
         inflater = LayoutInflater.from(context);
+        this.todos = data;
+
     }
 
     @Override
