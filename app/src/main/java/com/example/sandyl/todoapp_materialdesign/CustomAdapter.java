@@ -24,6 +24,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
 
 
+
     public CustomAdapter(Context context, List<Todo> data) {
         inflater = LayoutInflater.from(context);
         this.todos = data;
@@ -68,6 +69,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
             priorityTextView = (TextView) itemView.findViewById(R.id.priorityTextView);
         }
     }
+
 
     public String setColor(String priority) {
 

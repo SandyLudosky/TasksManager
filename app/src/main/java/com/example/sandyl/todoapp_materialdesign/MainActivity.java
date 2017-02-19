@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import java.text.DateFormat;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener {
 
     private String TAG;
     private Toolbar mToolbar;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     List<Todo> todos;
     CustomAdapter adapter;
     private FloatingActionButton fab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +44,44 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
+
+
         AddTodoAction();
+        setRecyclerViewClickListener();
     }
 
+    public void setRecyclerViewClickListener() {
+        recyclerView = (RecyclerView) findViewById(R.id.rvItems);
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(MainActivity.this, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // do whatever
+
+                        Todo todoSelected  = todos.get(position);
+                        Log.d("TAG", todoSelected.text);
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+    }
 
     public List getData() {
 
@@ -98,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -170,5 +209,6 @@ public class MainActivity extends AppCompatActivity {
         return date;
 
     }
+
 
 }
