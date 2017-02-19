@@ -25,6 +25,7 @@ public class Todo {
     public Priority priority;
     public Status status;
     public Date date;
+    public int _id;
 
 
 
@@ -33,6 +34,52 @@ public class Todo {
 
     public Todo(String text) {
         this.text = text;
+    }
+
+
+    //id
+    public int getId() {
+        return this._id;
+    }
+
+    public void setId(int id) {
+        this._id = id;
+    }
+
+    //Text
+    public String getText() {
+        return this.text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    //Status
+    public Status getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    //Priority
+    public Priority getPriority() {
+        return this.priority;
+    }
+
+    public void setStatus(Priority status) {
+        this.priority = priority;
+    }
+
+    //Date
+    public Date getDate() {
+        return this.date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     //methods
