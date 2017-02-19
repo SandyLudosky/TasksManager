@@ -15,7 +15,9 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddTodoActivity extends AppCompatActivity {
 
@@ -27,12 +29,12 @@ public class AddTodoActivity extends AppCompatActivity {
     TextView dateTextView;
     RadioGroup priorityRadioGroup;
 
-
     String todo;
     String priorityLevel;
     String dateStr;
     String status;
 
+    String dateSelected;
 
 
 
@@ -100,6 +102,8 @@ public class AddTodoActivity extends AppCompatActivity {
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
+            dateSelected = getStringDate(dayOfMonth,monthOfYear, (year - 1900));
+
         }
     };
 
@@ -108,10 +112,12 @@ public class AddTodoActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra("task", todoEditText.getText().toString());
         intent.putExtra("priority", priorityLevel);
+        intent.putExtra("date", dateSelected);
         setResult(1, intent);
 
     }
 
+    //Radio Button Group to set priority level
     public void addListenerOnRadioGroupButton() {
 
         //default value if no value change
@@ -137,6 +143,7 @@ public class AddTodoActivity extends AppCompatActivity {
 
     }
 
+    //on click listener to show calendar
     public void addListenerOnAddDateBtn() {
 
         addButton = (Button) findViewById(R.id.addButton);
@@ -150,4 +157,17 @@ public class AddTodoActivity extends AppCompatActivity {
             }
         });
     }
+
+    public String getStringDate(int date, int month, int year) {
+
+        Log.d("TAG", "date selected");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date d = new Date(year, month, date);
+        String formatedDate = sdf.format(d);
+
+        dateTextView.setText(formatedDate);
+        return formatedDate;
+    }
+
 }

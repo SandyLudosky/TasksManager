@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -104,9 +106,10 @@ public class MainActivity extends AppCompatActivity {
 
         String text = data.getStringExtra("task");
         String priority = data.getStringExtra("priority");
+        String date = data.getStringExtra("date");
 
         //add todo to list on saving
-        addTodo(text, new Date(), Todo.Status.ACTIVE, setPriority(priority));
+        addTodo(text, getDate(date), Todo.Status.ACTIVE, setPriority(priority));
 
     }
 
@@ -128,4 +131,24 @@ public class MainActivity extends AppCompatActivity {
 
         return  priorityLevel;
     }
+
+    public Date getDate(String dateStr) {
+
+        DateFormat dateFormat ;
+        Date date = new Date();
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+        try
+        {
+            date = (Date) dateFormat.parse(dateStr);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return date;
+
+    }
+
 }
