@@ -118,11 +118,14 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
 
         Intent intent = new Intent();
         intent.putExtra("task", todoEditText.getText().toString());
-        intent.putExtra("priority", priorityLevel);
         intent.putExtra("date", dateSelected);
+        intent.putExtra("priority", priorityLevel);
         intent.putExtra("status", statusSelected);
-        intent.putExtra("position", statusSelected);
+        intent.putExtra("position", position);
         setResult(1, intent);
+
+        Log.d("TAG", "priority selected : " + priorityLevel);
+        Log.d("TAG", "status selected : " + statusSelected);
 
     }
 
@@ -206,12 +209,12 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
     //Spinners
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-       statusSelected = parent.getItemAtPosition(position).toString();
+       statusSelected = parent.getItemAtPosition(position).toString().toLowerCase();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        statusSelected = "Active";
+        statusSelected = "active";
     }
 
 }

@@ -60,10 +60,12 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
+
         addListenerOnAddDateBtn();
         addListenerOnRadioGroupButton();
         createStatusSpinner();
         setTodoToEdit();
+
     }
 
 
@@ -117,6 +119,9 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         dateTextView.setText(todoDate);
 
         dateSelected = todoDate;
+
+        Log.d("TAG", "priority selected : " + todoPriority);
+        Log.d("TAG", "status selected : " + todoStatus);
 
         //setting spinners to selected value from todo selected
 
@@ -207,12 +212,12 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
         String priorityToSet = "";
 
-        switch(priority) {
-            case "Medium":
+        switch(priority.toLowerCase()) {
+            case "medium":
                 medium.setChecked(true);
                 high.setChecked(false);
                 break;
-            case "High":
+            case "high":
                 high.setChecked(true);
                 medium.setChecked(false);
                 break;
@@ -249,11 +254,11 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
         String statusToSet = new String();
 
-        switch(status) {
-            case "Active":
+        switch(status.toLowerCase()) {
+            case "active":
                 statusToSet = "Active";
                 break;
-            case "Done":
+            case "done":
                 statusToSet =  "Done";
                 break;
 
@@ -267,12 +272,12 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        statusSelected = parent.getItemAtPosition(position).toString();
+        statusSelected = parent.getItemAtPosition(position).toString().toLowerCase();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        statusSelected = "Active";
+        statusSelected = "active";
     }
 
     public String getStringDate(int date, int month, int year) {

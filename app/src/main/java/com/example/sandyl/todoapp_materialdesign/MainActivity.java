@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
                         intent.putExtra("position", position);
                         startActivityForResult(intent, 2);
 
-                        Log.d("TAG", todoSelected.text);
+                        Log.d("TAG", "todo to edit: " + todoSelected.priority);
+                        Log.d("TAG", "todo to edit: " + todoSelected.status);
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -173,6 +174,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
             addTodo(text, getDate(date), setStatus(status), setPriority(priority));
         }
 
+        Log.d("TAG", "todo saved: " + priority);
+        Log.d("TAG", "todo saved: " + status);
+
     }
 
     public Todo.Priority setPriority(String priority) {
@@ -180,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         //to initialize
         Todo.Priority priorityLevel = Todo.Priority.MEDIUM;
 
-        switch (priority) {
+        switch (priority.toLowerCase()) {
             case "medium":
                 priorityLevel = Todo.Priority.MEDIUM;
                 break;
@@ -220,12 +224,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         //to initialize
         Todo.Status todoStatus = ACTIVE;
 
-        switch (status) {
-            case "medium":
+        switch (status.toLowerCase()) {
+            case "active":
                 todoStatus= ACTIVE;
                 break;
 
-            case "high":
+            case "done":
                 todoStatus = Todo.Status.DONE;
                 break;
 
@@ -237,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     public String putStatus(Todo.Status  status) {
 
         //to initialize
-        String todoStatus = "active";
+        String todoStatus = new String();
 
         switch (status) {
             case ACTIVE:
