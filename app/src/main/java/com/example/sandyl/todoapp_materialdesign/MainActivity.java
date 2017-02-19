@@ -163,17 +163,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         int position = data.getIntExtra("position", -1);
 
         if (resultCode == 1) {
+            Log.d("TAG", "save");
             addTodo(text, getDate(date), setStatus(status), setPriority(priority));
         }
 
         if (resultCode == 2) {
+            Log.d("TAG", "edit");
             todos.remove(position);
             addTodo(text, getDate(date), setStatus(status), setPriority(priority));
         }
-
-
-        //add todo to list on saving
-        addTodo(text, getDate(date), setStatus(status), setPriority(priority));
 
     }
 
