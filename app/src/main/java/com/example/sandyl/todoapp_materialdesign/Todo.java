@@ -1,20 +1,30 @@
 package com.example.sandyl.todoapp_materialdesign;
 
+import java.util.Date;
+
 /**
  * Created by sandyl on 2017-02-18.
  */
 
 public class Todo {
 
-    //enum
+    //enums
     public enum Priority {
         MEDIUM,
         HIGH
     }
 
+    public enum Status {
+        ACTIVE,
+        DONE
+    }
+
     //properties
     public String text;
     public Priority priority;
+    public Status status;
+    public Date date;
+
 
 
     //constructors

@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -14,12 +17,26 @@ public class AddTodoActivity extends AppCompatActivity {
 
     final Calendar myCalendar = Calendar.getInstance();
     Button addButton;
+    EditText todoEditText;
+    TextView dateTextView;
+    RadioGroup priorityRadioGroup;
+
+
+    String todo;
+    String priorityLevel;
+    String dateStr;
+    String status;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_todo);
+
+        todoEditText = (EditText) findViewById(R.id.todoEditText);
+        dateTextView = (TextView) findViewById(R.id.dateTextView);
+        priorityRadioGroup = (RadioGroup) findViewById(R.id.priorityRadioGroup);
+
 
         addButton = (Button) findViewById(R.id.addButton);
 

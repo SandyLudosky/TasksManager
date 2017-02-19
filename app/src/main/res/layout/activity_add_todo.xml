@@ -39,7 +39,7 @@
         android:ems="10"
         android:layout_marginLeft="22dp"
         android:layout_marginStart="22dp"
-        android:id="@+id/editText"
+        android:id="@+id/todoEditText"
         android:layout_alignBaseline="@+id/textView"
         android:layout_alignBottom="@+id/textView"
         android:layout_toRightOf="@+id/textView"
@@ -50,7 +50,7 @@
         android:text="Priority:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/todoEditText"
         android:layout_marginLeft="22dp"
         android:layout_marginStart="22dp"
         android:layout_marginTop="28dp"
@@ -59,11 +59,11 @@
 
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/priorityRadioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="66dp"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/todoEditText"
         android:layout_alignLeft="@+id/textView"
         android:layout_alignStart="@+id/textView">
 
@@ -86,9 +86,9 @@
         android:text="Due Date:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/radioGroup"
-        android:layout_alignLeft="@+id/radioGroup"
-        android:layout_alignStart="@+id/radioGroup"
+        android:layout_below="@+id/priorityRadioGroup"
+        android:layout_alignLeft="@+id/priorityRadioGroup"
+        android:layout_alignStart="@+id/priorityRadioGroup"
         android:layout_marginTop="30dp"
         android:id="@+id/textView4"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -97,9 +97,9 @@
         android:text="Add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/radioGroup"
-        android:layout_toRightOf="@+id/textView6"
-        android:layout_toEndOf="@+id/textView6"
+        android:layout_below="@+id/priorityRadioGroup"
+        android:layout_toRightOf="@+id/dateTextView"
+        android:layout_toEndOf="@+id/dateTextView"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
@@ -110,7 +110,7 @@
         android:text="dd - MM - yyyy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView6"
+        android:id="@+id/dateTextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:layout_alignBottom="@+id/textView4"
         android:layout_centerHorizontal="true" />
