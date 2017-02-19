@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -47,10 +48,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
         Todo currentTodo = todos.get(position);
         String currentTodoPriority = currentTodo.setPriority(currentTodo.priority);
-        String dateView = "due date: " + getDateStr(currentTodo.date);
+        String dateView = calculateDueDate(currentTodo.date);
 
         holder.taskView.setText(currentTodo.text);
-        holder.dateTexView.setText(dateView);
+        holder.dateTextView.setText(dateView);
         holder.priorityTextView.setText(currentTodoPriority);
         holder.priorityTextView.setBackgroundColor(Color.parseColor(setColor(currentTodoPriority)));
 
@@ -66,7 +67,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
         public TextView taskView;
         public TextView priorityTextView;
-        public TextView dateTexView;
+        public TextView dateTextView;
 
 
         public ItemViewHolder(View itemView) {
@@ -74,7 +75,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
             taskView = (TextView) itemView.findViewById(R.id.taskTextView);
             priorityTextView = (TextView) itemView.findViewById(R.id.priorityTextView);
-            dateTexView = (TextView) itemView.findViewById(R.id.dateTextView);
+            dateTextView = (TextView) itemView.findViewById(R.id.dateTextView);
         }
     }
 
@@ -115,9 +116,31 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         return  stringDate;
     }
 
-    public String calculateDueDate() {
+    public String calculateDueDate(Date todoDate) {
 
+        Date today = new Date();
+        String formattedCount;
+
+        Calendar todoCal = Calendar.getInstance();
+        Calendar currentCal  = Calendar.getInstance();
+
+        todoCal.setTime(todoDate);
+        currentCal.setTime(today);
+
+        long diff = todoCal.getTimeInMillis() - currentCal.getTimeInMillis();
+
+        float dayCount = (float) diff / (24 * 60 * 60 * 1000);
+
+        if ((int)dayCount == 0) {
+            formattedCount = "due Today";
+        } else {
+            formattedCount = ("due in " + (int)dayCount + " days");
+        }
+
+        return formattedCount;
     }
+
+    
 
 
 }
