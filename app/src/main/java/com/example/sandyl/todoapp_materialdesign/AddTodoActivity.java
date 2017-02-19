@@ -9,17 +9,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddTodoActivity extends AppCompatActivity {
+public class AddTodoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private String TAG;
     private Toolbar mToolbar;
@@ -28,11 +32,13 @@ public class AddTodoActivity extends AppCompatActivity {
     EditText todoEditText;
     TextView dateTextView;
     RadioGroup priorityRadioGroup;
+    Spinner statusSpinner;
 
     String todo;
     String priorityLevel;
     String dateStr;
-    String status;
+    String statusSelected;
+    ArrayList<String> statusList;
 
     String dateSelected;
 
@@ -90,6 +96,7 @@ public class AddTodoActivity extends AppCompatActivity {
 
         addListenerOnAddDateBtn();
         addListenerOnRadioGroupButton();
+        createStatusSpinner();
 
     }
 
@@ -113,6 +120,7 @@ public class AddTodoActivity extends AppCompatActivity {
         intent.putExtra("task", todoEditText.getText().toString());
         intent.putExtra("priority", priorityLevel);
         intent.putExtra("date", dateSelected);
+        intent.putExtra("status", statusSelected);
         setResult(1, intent);
 
     }
@@ -168,6 +176,38 @@ public class AddTodoActivity extends AppCompatActivity {
 
         dateTextView.setText(formatedDate);
         return formatedDate;
+    }
+
+    public void createStatusSpinner() {
+
+        statusSpinner = (Spinner) findViewById(R.id.statusSpinner);
+        statusList = new ArrayList<String>();
+        statusList.add("Active");
+        statusList.add("Done");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, statusList);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Spinner click listener
+        statusSpinner.setOnItemSelectedListener(this);
+
+        // attaching data adapter to spinner
+        statusSpinner.setAdapter(dataAdapter);
+
+    }
+
+    //Spinners
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+       statusSelected = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        statusSelected = "Active";
     }
 
 }
