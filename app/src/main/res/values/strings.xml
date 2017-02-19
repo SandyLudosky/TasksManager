@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TodoApp-MaterialDesign</string>
+    <string name="radio_medium">Medium</string>
+    <string name="radio_high">High</string>
 </resources>
