@@ -103,9 +103,29 @@ public class MainActivity extends AppCompatActivity {
 
 
         String text = data.getStringExtra("task");
+        String priority = data.getStringExtra("priority");
 
         //add todo to list on saving
-        addTodo(text, new Date(), Todo.Status.ACTIVE, Todo.Priority.MEDIUM);
+        addTodo(text, new Date(), Todo.Status.ACTIVE, setPriority(priority));
 
+    }
+
+    public Todo.Priority setPriority(String priority) {
+
+        //to initialize
+        Todo.Priority priorityLevel = Todo.Priority.MEDIUM;
+
+        switch (priority) {
+            case "medium":
+                priorityLevel = Todo.Priority.MEDIUM;
+                break;
+
+            case "high":
+                priorityLevel = Todo.Priority.HIGH;
+                break;
+
+        }
+
+        return  priorityLevel;
     }
 }
