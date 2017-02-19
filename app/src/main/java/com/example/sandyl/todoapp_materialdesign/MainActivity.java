@@ -1,10 +1,13 @@
 package com.example.sandyl.todoapp_materialdesign;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +18,12 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     List<Todo> todos;
     CustomAdapter adapter;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         recyclerView = (RecyclerView) findViewById(R.id.rvItems);
         todos = new ArrayList<Todo>();
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         adapter = new CustomAdapter(MainActivity.this, todos);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+        AddTodoAction();
     }
 
 
@@ -55,6 +60,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return data;
+    }
+
+    public void AddTodoAction() {
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddTodoActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }
