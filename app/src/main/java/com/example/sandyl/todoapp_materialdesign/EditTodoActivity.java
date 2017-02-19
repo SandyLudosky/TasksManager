@@ -2,8 +2,8 @@ package com.example.sandyl.todoapp_materialdesign;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,7 +29,7 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
     private String TAG;
     private Toolbar mToolbar;
-    final Calendar myCalendar = Calendar.getInstance();
+    private Calendar myCalendar;
     Button addButton;
     EditText todoEditText;
     TextView dateTextView;
@@ -45,6 +46,10 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
     String dateSelected;
     int position;
+
+    int day;
+    int month;
+    int year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,7 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         addListenerOnRadioGroupButton();
         createStatusSpinner();
         setTodoToEdit();
+        myCalendar = setDateOnView(dateSelected);
 
     }
 
@@ -94,7 +100,7 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
                 return true;
 
             case R.id.action_dismiss:
-
+                saveTask();
                 finish();
                 return true;
 
@@ -131,6 +137,9 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
     }
 
     final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+
+
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
@@ -280,6 +289,19 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         statusSelected = "active";
     }
 
+    // display date - http://stackoverflow.com/questions/14851285/how-to-get-datepicker-value-in-date-format
+    public Calendar setDateOnView(String date) {
+
+        dateTextView.setText(date);
+        Date dateSelected = getDate(date);
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateSelected);
+
+        return calendar;
+    }
+
     public String getStringDate(int date, int month, int year) {
 
         Log.d("TAG", "date selected");
@@ -290,5 +312,24 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
         dateTextView.setText(formatedDate);
         return formatedDate;
+    }
+
+    public Date getDate(String dateStr) {
+
+        DateFormat dateFormat ;
+        Date date = new Date();
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+        try
+        {
+            date = (Date) dateFormat.parse(dateStr);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return date;
+
     }
 }
