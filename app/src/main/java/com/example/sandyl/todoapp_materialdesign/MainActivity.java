@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.sandyl.todoapp_materialdesign.Todo.Status.ACTIVE;
+
 public class MainActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener {
 
     private String TAG;
@@ -58,6 +60,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
                         // do whatever
 
                         Todo todoSelected  = todos.get(position);
+                        Intent intent = new Intent(MainActivity.this, EditTodoActivity.class);
+                        intent.putExtra("task", todoSelected.text);
+                        intent.putExtra("priority",   putPriority(todoSelected.priority));
+                        intent.putExtra("status", putStatus(todoSelected.status));
+                        intent.putExtra("date",getDateStr(todoSelected.date));
+                        intent.putExtra("position", position);
+                        startActivityForResult(intent, 2);
+
                         Log.d("TAG", todoSelected.text);
                     }
 
@@ -100,7 +110,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
             Todo todo = new Todo();
             todo.text = tasks.get(i);
+            todo.date = new Date();
             todo.priority = Todo.Priority.HIGH;
+            todo.status = Todo.Status.ACTIVE;
 
             Log.d("TAG", todo.text);
             data.add(todo);
@@ -143,10 +155,22 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         super.onActivityResult(requestCode, resultCode, data);
 
 
+
         String text = data.getStringExtra("task");
         String priority = data.getStringExtra("priority");
         String date = data.getStringExtra("date");
         String status = data.getStringExtra("status");
+        int position = data.getIntExtra("position", -1);
+
+        if (resultCode == 1) {
+            addTodo(text, getDate(date), setStatus(status), setPriority(priority));
+        }
+
+        if (resultCode == 2) {
+            todos.remove(position);
+            addTodo(text, getDate(date), setStatus(status), setPriority(priority));
+        }
+
 
         //add todo to list on saving
         addTodo(text, getDate(date), setStatus(status), setPriority(priority));
@@ -172,14 +196,35 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         return  priorityLevel;
     }
 
+    public String putPriority(Todo.Priority  priority) {
+
+        //to initialize
+        String priorityLevel = "medium";
+
+        switch (priority) {
+            case MEDIUM:
+                priorityLevel = "medium";
+                break;
+
+            case HIGH:
+                priorityLevel = "high";
+                break;
+
+        }
+        return  priorityLevel;
+    }
+
+
+
+
     public Todo.Status setStatus(String status) {
 
         //to initialize
-        Todo.Status todoStatus = Todo.Status.ACTIVE;
+        Todo.Status todoStatus = ACTIVE;
 
         switch (status) {
             case "medium":
-                todoStatus= Todo.Status.ACTIVE;
+                todoStatus= ACTIVE;
                 break;
 
             case "high":
@@ -190,6 +235,25 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         return  todoStatus;
     }
+
+    public String putStatus(Todo.Status  status) {
+
+        //to initialize
+        String todoStatus = "active";
+
+        switch (status) {
+            case ACTIVE:
+                todoStatus = "active";
+                break;
+
+            case DONE:
+                todoStatus= "done";
+                break;
+
+        }
+        return  todoStatus;
+    }
+
 
     public Date getDate(String dateStr) {
 
@@ -209,6 +273,17 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         return date;
 
     }
+
+    public String getDateStr(Date date) {
+
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+        String stringDate = formatter.format(date);
+
+        return  stringDate;
+    }
+
+
 
 
 }

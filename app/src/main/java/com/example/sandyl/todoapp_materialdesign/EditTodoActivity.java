@@ -2,8 +2,8 @@ package com.example.sandyl.todoapp_materialdesign;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddTodoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class EditTodoActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener  {
 
     private String TAG;
     private Toolbar mToolbar;
@@ -32,8 +33,9 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
     EditText todoEditText;
     TextView dateTextView;
     RadioGroup priorityRadioGroup;
+    RadioButton medium;
+    RadioButton high;
     Spinner statusSpinner;
-    int position;
 
     String todo;
     String priorityLevel;
@@ -42,6 +44,27 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
     ArrayList<String> statusList;
 
     String dateSelected;
+    int position;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_todo);
+
+        todoEditText = (EditText) findViewById(R.id.todoEditText);
+        dateTextView = (TextView) findViewById(R.id.dateTextView);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+        addListenerOnAddDateBtn();
+        addListenerOnRadioGroupButton();
+        createStatusSpinner();
+        setTodoToEdit();
+    }
 
 
 
@@ -49,6 +72,7 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.add_todo_menu, menu);
+
 
         return true;
     }
@@ -79,27 +103,27 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_todo);
 
-        todoEditText = (EditText) findViewById(R.id.todoEditText);
-        dateTextView = (TextView) findViewById(R.id.dateTextView);
+    public void setTodoToEdit() {
 
+        Intent intent = getIntent();
+        String todoName = intent.getStringExtra("task");
+        String todoPriority = intent.getStringExtra("priority");
+        String todoStatus = intent.getStringExtra("status");
+        String todoDate = intent.getStringExtra("date");
+        position = intent.getIntExtra("position", -1);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        todoEditText.setText(todoName);
+        dateTextView.setText(todoDate);
 
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        dateSelected = todoDate;
 
+        //setting spinners to selected value from todo selected
 
-        addListenerOnAddDateBtn();
-        addListenerOnRadioGroupButton();
-        createStatusSpinner();
+        setSelectedPriority(todoPriority);
+        setSelectedStatus(todoStatus);
 
     }
-
 
     final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -121,10 +145,28 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
         intent.putExtra("priority", priorityLevel);
         intent.putExtra("date", dateSelected);
         intent.putExtra("status", statusSelected);
-        intent.putExtra("position", statusSelected);
-        setResult(1, intent);
+        intent.putExtra("position", position);
+        setResult(2, intent);
 
     }
+
+
+    //on click listener to show calendar
+    public void addListenerOnAddDateBtn() {
+
+        addButton = (Button) findViewById(R.id.addButton);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(EditTodoActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+    }
+
+
 
     //Radio Button Group to set priority level
     public void addListenerOnRadioGroupButton() {
@@ -155,31 +197,28 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
 
     }
 
-    //on click listener to show calendar
-    public void addListenerOnAddDateBtn() {
 
-        addButton = (Button) findViewById(R.id.addButton);
+    public void setSelectedPriority(String priority) {
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(AddTodoActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-    }
+        priorityRadioGroup = (RadioGroup) findViewById(R.id.priorityRadioGroup);
 
-    public String getStringDate(int date, int month, int year) {
+        medium = (RadioButton) findViewById(R.id.medium);
+        high = (RadioButton) findViewById(R.id.high);
 
-        Log.d("TAG", "date selected");
+        String priorityToSet = "";
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        Date d = new Date(year, month, date);
-        String formatedDate = sdf.format(d);
+        switch(priority) {
+            case "Medium":
+                medium.setChecked(true);
+                high.setChecked(false);
+                break;
+            case "High":
+                high.setChecked(true);
+                medium.setChecked(false);
+                break;
+            default:
 
-        dateTextView.setText(formatedDate);
-        return formatedDate;
+        }
     }
 
     public void createStatusSpinner() {
@@ -203,10 +242,32 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
 
     }
 
-    //Spinners
+
+    public void setSelectedStatus(String status) {
+
+        statusSpinner = (Spinner) findViewById(R.id.statusSpinner);
+
+        String statusToSet = new String();
+
+        switch(status) {
+            case "Active":
+                statusToSet = "Active";
+                break;
+            case "Done":
+                statusToSet =  "Done";
+                break;
+
+            default:
+
+        }
+
+        statusSpinner.setSelection(((ArrayAdapter<String>)statusSpinner.getAdapter()).getPosition(statusToSet));
+
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-       statusSelected = parent.getItemAtPosition(position).toString();
+        statusSelected = parent.getItemAtPosition(position).toString();
     }
 
     @Override
@@ -214,4 +275,15 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
         statusSelected = "Active";
     }
 
+    public String getStringDate(int date, int month, int year) {
+
+        Log.d("TAG", "date selected");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date d = new Date(year, month, date);
+        String formatedDate = sdf.format(d);
+
+        dateTextView.setText(formatedDate);
+        return formatedDate;
+    }
 }
