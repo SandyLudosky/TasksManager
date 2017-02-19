@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,6 +33,9 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
     EditText todoEditText;
     TextView dateTextView;
     RadioGroup priorityRadioGroup;
+    RadioButton medium;
+    RadioButton high;
+    RadioButton low;
     Spinner statusSpinner;
     int position;
 
@@ -136,11 +140,20 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
         priorityLevel = "medium";
 
         priorityRadioGroup = (RadioGroup) findViewById(R.id.priorityRadioGroup);
+        medium = (RadioButton) findViewById(R.id.medium);
+        high = (RadioButton) findViewById(R.id.high);
+        low = (RadioButton) findViewById(R.id.low);
+
+        low.setChecked(true);
 
         priorityRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId){
+                    case R.id.low:
+                        Log.d("TAG", "low checked");
+                        priorityLevel = "low";
+                        break;
                     case R.id.medium:
                         Log.d("TAG", "medium checked");
                         priorityLevel = "medium";

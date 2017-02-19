@@ -36,6 +36,7 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
     RadioGroup priorityRadioGroup;
     RadioButton medium;
     RadioButton high;
+    RadioButton low;
     Spinner statusSpinner;
 
     String todo;
@@ -194,6 +195,10 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId){
+                    case R.id.low:
+                        Log.d("TAG", "low checked");
+                        priorityLevel = "low";
+                        break;
                     case R.id.medium:
                         Log.d("TAG", "medium checked");
                         priorityLevel = "medium";
@@ -218,17 +223,19 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
         medium = (RadioButton) findViewById(R.id.medium);
         high = (RadioButton) findViewById(R.id.high);
+        low = (RadioButton) findViewById(R.id.low);
 
         String priorityToSet = "";
 
         switch(priority.toLowerCase()) {
+            case "low":
+                low.setChecked(true);
+                break;
             case "medium":
                 medium.setChecked(true);
-                high.setChecked(false);
                 break;
             case "high":
                 high.setChecked(true);
-                medium.setChecked(false);
                 break;
             default:
 

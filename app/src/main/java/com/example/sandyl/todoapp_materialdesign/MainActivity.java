@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.example.sandyl.todoapp_materialdesign.Todo.Status.ACTIVE;
+import static com.example.sandyl.todoapp_materialdesign.Todo.Status.DONE;
 
 public class MainActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener {
 
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     List<Todo> todos;
     CustomAdapter adapter;
     private FloatingActionButton fab;
+    TextView dateTextView;
 
 
     @Override
@@ -45,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         adapter = new CustomAdapter(MainActivity.this, todos);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-
 
 
         AddTodoAction();
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
             Todo todo = new Todo();
             todo.text = tasks.get(i);
             todo.date = new Date();
-            todo.priority = Todo.Priority.HIGH;
+            todo.priority = Todo.Priority.LOW;
             todo.status = Todo.Status.ACTIVE;
 
             Log.d("TAG", todo.text);
@@ -123,13 +125,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     }
 
 
-    public void addTodo(String text, Date date, Todo.Status status, Todo.Priority priority) {
+    public void addTodo(Todo todo) {
 
         Todo newTodo = new Todo();
-        newTodo.text = text;
-        newTodo.date = date;
-        newTodo.status = status;
-        newTodo.priority = priority;
+        newTodo.text = todo.text;
+        newTodo.date = todo.date;
+        newTodo.status = todo.status;
+        newTodo.priority = todo.priority;
 
         todos.add(newTodo);
         adapter.notifyDataSetChanged();
@@ -163,15 +165,21 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         String status = data.getStringExtra("status");
         int position = data.getIntExtra("position", -1);
 
+        Todo newTodo = new Todo();
+        newTodo.text = text;
+        newTodo.date = getDate(date);
+        newTodo.status = setStatus(status);
+        newTodo.priority = setPriority(priority);
+
         if (resultCode == 1) {
             Log.d("TAG", "save");
-            addTodo(text, getDate(date), setStatus(status), setPriority(priority));
+            addTodo(newTodo);
         }
 
         if (resultCode == 2) {
             Log.d("TAG", "edit");
             todos.remove(position);
-            addTodo(text, getDate(date), setStatus(status), setPriority(priority));
+            todos.add(position, newTodo);
         }
 
         Log.d("TAG", "todo saved: " + priority);
@@ -182,9 +190,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     public Todo.Priority setPriority(String priority) {
 
         //to initialize
-        Todo.Priority priorityLevel = Todo.Priority.MEDIUM;
+        Todo.Priority priorityLevel = Todo.Priority.LOW;
 
         switch (priority.toLowerCase()) {
+            case "low":
+                priorityLevel = Todo.Priority.LOW;
+                break;
+
             case "medium":
                 priorityLevel = Todo.Priority.MEDIUM;
                 break;
@@ -204,6 +216,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         String priorityLevel = "medium";
 
         switch (priority) {
+            case LOW:
+                priorityLevel = "low";
+                break;
+
             case MEDIUM:
                 priorityLevel = "medium";
                 break;
@@ -226,11 +242,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         switch (status.toLowerCase()) {
             case "active":
-                todoStatus= ACTIVE;
+                todoStatus = ACTIVE;
                 break;
 
             case "done":
-                todoStatus = Todo.Status.DONE;
+                todoStatus = DONE;
                 break;
 
         }
@@ -284,8 +300,5 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         return  stringDate;
     }
-
-
-
 
 }

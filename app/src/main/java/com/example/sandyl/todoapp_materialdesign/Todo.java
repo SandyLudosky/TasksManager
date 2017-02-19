@@ -10,6 +10,7 @@ public class Todo {
 
     //enums
     public enum Priority {
+        LOW,
         MEDIUM,
         HIGH
     }
@@ -40,12 +41,17 @@ public class Todo {
         String todoPriority = "";
 
         switch (priority) {
+
+            case LOW:
+                todoPriority = "low";
+                break;
+
             case MEDIUM:
-                todoPriority = "Medium";
+                todoPriority = "medium";
                 break;
 
             case HIGH:
-                todoPriority = "High";
+                todoPriority = "high";
                 break;
 
             default:

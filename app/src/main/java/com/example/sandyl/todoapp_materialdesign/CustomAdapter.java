@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,9 +47,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
         Todo currentTodo = todos.get(position);
         String currentTodoPriority = currentTodo.setPriority(currentTodo.priority);
+        String dateView = "due date: " + getDateStr(currentTodo.date);
+
         holder.taskView.setText(currentTodo.text);
+        holder.dateTexView.setText(dateView);
         holder.priorityTextView.setText(currentTodoPriority);
-        holder.priorityTextView.setTextColor(Color.parseColor(setColor(currentTodoPriority)));
+        holder.priorityTextView.setBackgroundColor(Color.parseColor(setColor(currentTodoPriority)));
 
     }
 
@@ -60,6 +66,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
         public TextView taskView;
         public TextView priorityTextView;
+        public TextView dateTexView;
 
 
         public ItemViewHolder(View itemView) {
@@ -67,6 +74,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
             taskView = (TextView) itemView.findViewById(R.id.taskTextView);
             priorityTextView = (TextView) itemView.findViewById(R.id.priorityTextView);
+            dateTexView = (TextView) itemView.findViewById(R.id.dateTextView);
         }
     }
 
@@ -75,13 +83,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
         String priorityColor = "";
 
-        switch (priority) {
+        switch (priority.toLowerCase()) {
 
-            case "Medium":
+            case "low":
+                priorityColor = "#00FF00";
+                break;
+
+
+            case "medium":
                 priorityColor = "#FFD700";
                 break;
 
-            case "High":
+            case "high":
                 priorityColor = "#FF0000";
                 break;
 
@@ -91,5 +104,20 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         }
         return  priorityColor;
     }
+
+
+    public String getDateStr(Date date) {
+
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+        String stringDate = formatter.format(date);
+
+        return  stringDate;
+    }
+
+    public String calculateDueDate() {
+
+    }
+
 
 }
