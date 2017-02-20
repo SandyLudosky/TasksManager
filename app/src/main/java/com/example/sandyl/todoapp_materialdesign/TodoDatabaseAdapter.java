@@ -42,7 +42,6 @@ public class TodoDatabaseAdapter {
         values.put(todoDatabaseHelper.KEY_DATE, getDateStr(todo.getDate())); // Todo date
 
 
-        //to check,m
         long id = db.insert(todoDatabaseHelper.TABLE_TODOS, null, values);
 
         return id;
@@ -62,11 +61,12 @@ public class TodoDatabaseAdapter {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                int uid = cursor.getInt(0);
-                String name = cursor.getString(1);
-                String status = cursor.getString(2);
-                String priority = cursor.getString(3);
-                String date = cursor.getString(4);
+
+                int uid = cursor.getInt(getColIndex(cursor, todoDatabaseHelper.KEY_ID));
+                String name =  cursor.getString(getColIndex(cursor, todoDatabaseHelper.KEY_NAME));
+                String status = cursor.getString(getColIndex(cursor, todoDatabaseHelper.KEY_STATUS));
+                String priority =cursor.getString(getColIndex(cursor, todoDatabaseHelper.KEY_PRIORITY));
+                String date =cursor.getString(getColIndex(cursor, todoDatabaseHelper.KEY_DATE));
 
                 Todo todo = new Todo();
                 todo._id = uid;
@@ -97,11 +97,12 @@ public class TodoDatabaseAdapter {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                int uid = cursor.getInt(0);
-                String name = cursor.getString(1);
-                String status = cursor.getString(2);
-                String priority = cursor.getString(3);
-                String date = cursor.getString(4);
+
+                int uid = cursor.getInt(getColIndex(cursor, todoDatabaseHelper.KEY_ID));
+                String name =  cursor.getString(getColIndex(cursor, todoDatabaseHelper.KEY_NAME));
+                String status = cursor.getString(getColIndex(cursor, todoDatabaseHelper.KEY_STATUS));
+                String priority =cursor.getString(getColIndex(cursor, todoDatabaseHelper.KEY_PRIORITY));
+                String date =cursor.getString(getColIndex(cursor, todoDatabaseHelper.KEY_DATE));
 
                 todo._id = uid;
                 todo.text =  name;
@@ -120,6 +121,16 @@ public class TodoDatabaseAdapter {
 
 
     //DELETE
+
+    //function to return column index - less chance of error
+    public int getColIndex(Cursor cursor, String colName) {
+
+        int index =  cursor.getColumnIndex(colName);
+
+        return  index;
+
+    }
+
 
     //Status
     public String putStatus(Todo.Status  status) {

@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         long id = todoDatabase.insertTodo(newTodo);
 
-        if (id < 0) {
+        if (id > 0) {
             Toast.makeText(this,"new todo successfully added to database", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this,"error inserting to database", Toast.LENGTH_LONG).show();
