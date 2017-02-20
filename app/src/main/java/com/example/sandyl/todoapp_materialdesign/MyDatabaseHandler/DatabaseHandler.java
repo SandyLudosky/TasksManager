@@ -1,10 +1,12 @@
-package com.example.sandyl.todoapp_materialdesign;
+package com.example.sandyl.todoapp_materialdesign.MyDatabaseHandler;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.sandyl.todoapp_materialdesign.Todo;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
