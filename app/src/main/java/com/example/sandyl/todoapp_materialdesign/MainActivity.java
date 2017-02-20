@@ -2,7 +2,6 @@ package com.example.sandyl.todoapp_materialdesign;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -17,6 +16,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         //database initialization
         todoDatabase = new TodoDatabaseAdapter(this);
-        SQLiteDatabase db =  todoDatabase.todoDatabaseHelper.getWritableDatabase();
+       // SQLiteDatabase db =  todoDatabase.todoDatabaseHelper.getWritableDatabase();
     }
 
     public void setRecyclerViewClickListener() {
@@ -148,6 +148,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         newTodo.priority = todo.priority;
 
         todos.add(newTodo);
+
+        long id = todoDatabase.insertTodo(newTodo);
+
+        if (id < 0) {
+            Toast.makeText(this,"new todo successfully added to database", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this,"error inserting to database", Toast.LENGTH_LONG).show();
+        }
+
         adapter.notifyDataSetChanged();
 
     }
