@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     TextView dateTextView;
 
     //database helper
-    TodoDatabaseHelper todoDatabase;
+    TodoDatabaseAdapter todoDatabase;
 
 
     @Override
@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
 
         //database initialization
-        todoDatabase = new TodoDatabaseHelper(this);
-        SQLiteDatabase db =  todoDatabase.getWritableDatabase();
+        todoDatabase = new TodoDatabaseAdapter(this);
+        SQLiteDatabase db =  todoDatabase.todoDatabaseHelper.getWritableDatabase();
     }
 
     public void setRecyclerViewClickListener() {
