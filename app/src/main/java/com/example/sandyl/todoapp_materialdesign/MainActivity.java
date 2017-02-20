@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //database initialization
+        todoDatabase = new TodoDatabaseAdapter(this);
+        // SQLiteDatabase db =  todoDatabase.todoDatabaseHelper.getWritableDatabase();
+
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(mToolbar);
@@ -53,7 +57,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         recyclerView = (RecyclerView) findViewById(R.id.rvItems);
         todos = new ArrayList<Todo>();
+
         todos = getData();
+        queryAll();
+
         adapter = new CustomAdapter(MainActivity.this, todos);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
@@ -63,9 +70,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         setRecyclerViewClickListener();
 
 
-        //database initialization
-        todoDatabase = new TodoDatabaseAdapter(this);
-       // SQLiteDatabase db =  todoDatabase.todoDatabaseHelper.getWritableDatabase();
+
+
+
+
     }
 
     public void setRecyclerViewClickListener() {
@@ -159,6 +167,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         adapter.notifyDataSetChanged();
 
+    }
+
+    public void queryAll() {
+        todos.addAll(todoDatabase.getAllData());
     }
 
     public void AddTodoAction() {

@@ -2,13 +2,16 @@ package com.example.sandyl.todoapp_materialdesign;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.example.sandyl.todoapp_materialdesign.Todo.Status.ACTIVE;
 import static com.example.sandyl.todoapp_materialdesign.Todo.Status.DONE;
@@ -36,9 +39,44 @@ public class TodoDatabaseAdapter {
         values.put(todoDatabaseHelper.KEY_PRIORITY, putPriority(todo.getPriority())); // Todo priority
         values.put(todoDatabaseHelper.KEY_DATE, getDateStr(todo.getDate())); // Todo date
 
+
+        //to check
         long id = db.insert(todoDatabaseHelper.TABLE_TODOS, null, values);
 
         return id;
+    }
+
+    public List<Todo> getAllData() {
+
+        SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
+        List<Todo> todos = new ArrayList<Todo>();
+
+        String [] cols = {todoDatabaseHelper.KEY_ID, todoDatabaseHelper.KEY_NAME, todoDatabaseHelper.KEY_STATUS, todoDatabaseHelper.KEY_PRIORITY, todoDatabaseHelper.KEY_DATE};
+
+        Cursor cursor = db.query(todoDatabaseHelper.TABLE_TODOS, cols, null, null,null, null, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                int uid = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String status = cursor.getString(2);
+                String priority = cursor.getString(3);
+                String date = cursor.getString(4);
+
+                Todo todo = new Todo();
+                todo._id = uid;
+                todo.text =  name;
+                todo.status = setTodoStatus(status);
+                todo.priority = setTodoPriority(priority);
+                todo.date = getDate(date);
+
+                todos.add(todo);
+            } while (cursor.moveToNext());
+        }
+
+        return todos;
+
     }
 
     //Status
@@ -162,7 +200,7 @@ public class TodoDatabaseAdapter {
 
         // All Static variables
         // Database Version - to update after every change in db schema
-        private static final int DATABASE_VERSION = 3;
+        private static final int DATABASE_VERSION = 6;
 
         // Database Name
         private static final String DATABASE_NAME = "todosManager.db";
@@ -181,7 +219,7 @@ public class TodoDatabaseAdapter {
         private Context context;
 
         //string statement to create tables and columns
-        private static final String CREATE_TABLE_TODOS = "CREATE TABLE "+TABLE_TODOS+
+        private static final String CREATE_TABLE_TODOS = "CREATE TABLE IF NOT EXISTS "+TABLE_TODOS+
                 "("+KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
                 +KEY_NAME+" VARCHAR(255), "
                 +KEY_STATUS +" VARCHAR(255),"

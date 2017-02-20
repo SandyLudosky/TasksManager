@@ -49,6 +49,7 @@ public class Todo {
     }
 
     //properties
+    public int _id;
     public String text;
     public Priority priority;
     public Status status;
