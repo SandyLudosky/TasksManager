@@ -94,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
                         Log.d("TAG", "todo to edit: " + todoSelected.priority);
                         Log.d("TAG", "todo to edit: " + todoSelected.status);
+
+                        getTodo(todoSelected);
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -171,6 +173,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
     public void queryAll() {
         todos.addAll(todoDatabase.getAllData());
+    }
+
+    public void getTodo(Todo todo) {
+
+        Todo aTodo = new Todo();
+        aTodo = todoDatabase.getTodo(todo);
+
+        Toast.makeText(this, "todo selected is " +aTodo.getText()+" ("+aTodo.getId()+") " , Toast.LENGTH_LONG).show();
     }
 
     public void AddTodoAction() {

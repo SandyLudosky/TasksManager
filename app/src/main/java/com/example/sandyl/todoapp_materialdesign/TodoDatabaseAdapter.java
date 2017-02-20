@@ -30,6 +30,8 @@ public class TodoDatabaseAdapter {
         todoDatabaseHelper = new TodoDatabaseHelper(context);
     }
 
+
+    //CREATE
     public long insertTodo(Todo todo) {
 
         SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
@@ -40,12 +42,14 @@ public class TodoDatabaseAdapter {
         values.put(todoDatabaseHelper.KEY_DATE, getDateStr(todo.getDate())); // Todo date
 
 
-        //to check
+        //to check,m
         long id = db.insert(todoDatabaseHelper.TABLE_TODOS, null, values);
 
         return id;
     }
 
+
+    //READ - query all data
     public List<Todo> getAllData() {
 
         SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
@@ -78,6 +82,44 @@ public class TodoDatabaseAdapter {
         return todos;
 
     }
+
+    //READ - query 1 specific data
+    public Todo getTodo(Todo todo) {
+
+        SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
+        Todo aTodo = new Todo();
+
+        String [] cols = {todoDatabaseHelper.KEY_ID, todoDatabaseHelper.KEY_NAME, todoDatabaseHelper.KEY_STATUS, todoDatabaseHelper.KEY_PRIORITY, todoDatabaseHelper.KEY_DATE};
+        String arg =  todoDatabaseHelper.KEY_ID+ "= "+todo.getId()+"" ;
+
+        Cursor cursor = db.query(todoDatabaseHelper.TABLE_TODOS, cols, arg, null,null, null, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                int uid = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String status = cursor.getString(2);
+                String priority = cursor.getString(3);
+                String date = cursor.getString(4);
+
+                todo._id = uid;
+                todo.text =  name;
+                todo.status = setTodoStatus(status);
+                todo.priority = setTodoPriority(priority);
+                todo.date = getDate(date);
+
+            } while (cursor.moveToNext());
+        }
+
+        return todo;
+
+    }
+
+    //UPDATE
+
+
+    //DELETE
 
     //Status
     public String putStatus(Todo.Status  status) {

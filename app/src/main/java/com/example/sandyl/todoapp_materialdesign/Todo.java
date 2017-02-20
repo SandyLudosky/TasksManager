@@ -8,6 +8,14 @@ import java.util.Date;
 
 public class Todo {
 
+    public int getId() {
+        return this._id;
+    }
+
+    public void setId(int id) {
+        this._id = id;
+    }
+
     public String getText() {
         return text;
     }
