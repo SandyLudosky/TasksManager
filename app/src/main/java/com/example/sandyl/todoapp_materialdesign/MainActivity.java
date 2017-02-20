@@ -1,8 +1,14 @@
 package com.example.sandyl.todoapp_materialdesign;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     private FloatingActionButton fab;
     TextView dateTextView;
 
+    //database helper
+    TodoDatabaseHelper todoDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         AddTodoAction();
         setRecyclerViewClickListener();
+
+
+        //database initialization
+        todoDatabase = new TodoDatabaseHelper(this);
+        SQLiteDatabase db =  todoDatabase.getWritableDatabase();
     }
 
     public void setRecyclerViewClickListener() {
@@ -141,6 +155,17 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     public void AddTodoAction() {
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.turquoise)));
+
+        //get the drawable
+        Drawable myFabSrc = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_input_add, getTheme());
+
+        Drawable whiteFab = myFabSrc.getConstantState().newDrawable();
+
+        whiteFab.mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
+        fab.setImageDrawable(whiteFab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
