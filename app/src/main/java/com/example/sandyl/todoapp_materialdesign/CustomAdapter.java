@@ -55,8 +55,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         holder.priorityTextView.setText(currentTodoPriority);
         holder.priorityTextView.setBackgroundColor(Color.parseColor(setColor(currentTodoPriority)));
 
+
         if (calculateDueDate(currentTodo.date) < 1)  {
             holder.dateTextView.setTextColor(Color.parseColor("#e74c3c"));
+        } else {
+            holder.dateTextView.setTextColor(Color.parseColor("#000000"));
         }
 
 
