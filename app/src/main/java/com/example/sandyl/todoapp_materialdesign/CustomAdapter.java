@@ -55,6 +55,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         holder.priorityTextView.setText(currentTodoPriority);
         holder.priorityTextView.setBackgroundColor(Color.parseColor(setColor(currentTodoPriority)));
 
+
     }
 
     @Override
@@ -87,16 +88,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         switch (priority.toLowerCase()) {
 
             case "low":
-                priorityColor = "#00FF00";
+                priorityColor = "#1abc9c";
                 break;
 
 
             case "medium":
-                priorityColor = "#FFD700";
+                priorityColor = "#f1c40f";
                 break;
 
             case "high":
-                priorityColor = "#FF0000";
+                priorityColor = "#e74c3c";
                 break;
 
             default:

@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         adapter = new CustomAdapter(MainActivity.this, todos);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
         AddTodoAction();
         setRecyclerViewClickListener();
