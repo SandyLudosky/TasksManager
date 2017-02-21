@@ -48,12 +48,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
         Todo currentTodo = todos.get(position);
         String currentTodoPriority = currentTodo.setTodoPriority(currentTodo.priority);
-        String dateView = calculateDueDate(currentTodo.date);
+        String dateView = returnDaysCount(calculateDueDate(currentTodo.date));
 
         holder.taskView.setText(currentTodo.text);
         holder.dateTextView.setText(dateView);
         holder.priorityTextView.setText(currentTodoPriority);
         holder.priorityTextView.setBackgroundColor(Color.parseColor(setColor(currentTodoPriority)));
+
+        if (calculateDueDate(currentTodo.date) < 1)  {
+            holder.dateTextView.setTextColor(Color.parseColor("#e74c3c"));
+        }
 
 
     }
@@ -117,10 +121,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         return  stringDate;
     }
 
-    public String calculateDueDate(Date todoDate) {
+    public float calculateDueDate(Date todoDate) {
 
         Date today = new Date();
-        String formattedCount;
+
 
         Calendar todoCal = Calendar.getInstance();
         Calendar currentCal  = Calendar.getInstance();
@@ -131,6 +135,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         long diff = todoCal.getTimeInMillis() - currentCal.getTimeInMillis();
 
         float dayCount = (float) diff / (24 * 60 * 60 * 1000);
+
+        returnDaysCount(dayCount);
+
+        return dayCount;
+    }
+
+    public String returnDaysCount(float dayCount) {
+
+        String formattedCount;
 
         if ((int)dayCount == 0) {
             formattedCount = "due Today \uD83D\uDCA1";

@@ -127,8 +127,6 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
         intent.putExtra("status", statusSelected);
         intent.putExtra("position", position);
         setResult(1, intent);
-
-
     }
 
     //Radio Button Group to set priority level
@@ -163,8 +161,6 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
 
             }
         });
-
-
 
     }
 

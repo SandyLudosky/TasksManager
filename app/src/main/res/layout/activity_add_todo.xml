@@ -4,6 +4,7 @@
     android:id="@+id/activity_add_todo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ecf0f1"
     tools:context="com.example.sandyl.todoapp_materialdesign.AddTodoActivity">
 
     <LinearLayout

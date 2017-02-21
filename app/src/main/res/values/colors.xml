@@ -7,4 +7,5 @@
     <color name="navigationBarColor">#95a5a6</color>
     <color name="colorAccent">#FF80AB</color>
     <color name="turquoise">#1abc9c</color>
+    <color name="due">#e74c3c</color>
 </resources>
