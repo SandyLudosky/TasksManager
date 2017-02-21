@@ -1,8 +1,10 @@
 package com.example.sandyl.todoapp_materialdesign;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,8 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-import static android.R.attr.id;
 
 public class EditTodoActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener  {
 
@@ -99,18 +99,17 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         switch (id) {
             case R.id.action_delete:
 
-                deleteTask();
-                finish();
+                createDialog();
                 return true;
 
             case R.id.action_save:
-
-                saveTask();
+                //sends action for update
+                sendAction(2);
                 finish();
                 return true;
 
             case R.id.action_dismiss:
-                saveTask();
+                sendAction(2);
                 finish();
                 return true;
 
@@ -119,7 +118,6 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         }
 
     }
-
 
 
     public void setTodoToEdit() {
@@ -162,7 +160,29 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         }
     };
 
-    public void saveTask() {
+
+    public void createDialog() {
+        final EditText taskEditText = new EditText(this);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Delete todo")
+                .setMessage("Are you sure you want to delete item from list ?")
+                .setView(taskEditText)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //send action for deletion
+                        sendAction(3);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        dialog.show();
+    }
+
+
+
+    public void sendAction(int result) {
 
         Intent intent = new Intent();
         intent.putExtra("uid", uid);
@@ -172,24 +192,12 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         intent.putExtra("status", statusSelected);
         intent.putExtra("position", position);
 
-
-        Log.d("TAG", "id of todo saved : " + id);
-        setResult(2, intent);
-
-    }
-
-    public void deleteTask() {
-        Intent intent = new Intent();
-        intent.putExtra("uid", uid);
-        intent.putExtra("task", todoEditText.getText().toString());
-        intent.putExtra("priority", priorityLevel);
-        intent.putExtra("date", dateSelected);
-        intent.putExtra("status", statusSelected);
-        intent.putExtra("position", position);
-        setResult(3, intent);
+        //resultCode 2 = update and save
+        //resultCode 3 = delete
+        setResult(result, intent);
+        finish();
 
     }
-
 
 
     //on click listener to show calendar

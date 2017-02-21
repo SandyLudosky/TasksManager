@@ -133,7 +133,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         float dayCount = (float) diff / (24 * 60 * 60 * 1000);
 
         if ((int)dayCount == 0) {
-            formattedCount = "due Today";
+            formattedCount = "due Today \uD83D\uDCA1";
         } else {
             formattedCount = ("due in " + (int)dayCount + " days");
         }
