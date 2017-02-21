@@ -134,15 +134,14 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
     //Radio Button Group to set priority level
     public void addListenerOnRadioGroupButton() {
 
-        //default value if no value change
-        priorityLevel = "low";
-        low.setChecked(true);
-
-
         priorityRadioGroup = (RadioGroup) findViewById(R.id.priorityRadioGroup);
         medium = (RadioButton) findViewById(R.id.medium);
         high = (RadioButton) findViewById(R.id.high);
         low = (RadioButton) findViewById(R.id.low);
+
+        //default value if no value change
+        priorityLevel = "low";
+        low.setChecked(true);
 
         priorityRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
