@@ -128,8 +128,6 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
         intent.putExtra("position", position);
         setResult(1, intent);
 
-        Log.d("TAG", "priority selected : " + priorityLevel);
-        Log.d("TAG", "status selected : " + statusSelected);
 
     }
 
@@ -137,14 +135,14 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
     public void addListenerOnRadioGroupButton() {
 
         //default value if no value change
-        priorityLevel = "medium";
+        priorityLevel = "low";
+        low.setChecked(true);
+
 
         priorityRadioGroup = (RadioGroup) findViewById(R.id.priorityRadioGroup);
         medium = (RadioButton) findViewById(R.id.medium);
         high = (RadioButton) findViewById(R.id.high);
         low = (RadioButton) findViewById(R.id.low);
-
-        low.setChecked(true);
 
         priorityRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {

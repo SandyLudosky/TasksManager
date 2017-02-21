@@ -1,8 +1,13 @@
 package com.example.sandyl.todoapp_materialdesign;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +16,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,11 +37,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     private FloatingActionButton fab;
     TextView dateTextView;
 
+    //database helper
+    TodoDatabaseAdapter todoDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //database initialization
+        todoDatabase = new TodoDatabaseAdapter(this);
+        // SQLiteDatabase db =  todoDatabase.todoDatabaseHelper.getWritableDatabase();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -44,7 +57,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         recyclerView = (RecyclerView) findViewById(R.id.rvItems);
         todos = new ArrayList<Todo>();
-        todos = getData();
+
+        displayData();
+
         adapter = new CustomAdapter(MainActivity.this, todos);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
@@ -52,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         AddTodoAction();
         setRecyclerViewClickListener();
+
     }
 
     public void setRecyclerViewClickListener() {
@@ -63,15 +79,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
                         Todo todoSelected  = todos.get(position);
                         Intent intent = new Intent(MainActivity.this, EditTodoActivity.class);
-                        intent.putExtra("task", todoSelected.text);
-                        intent.putExtra("priority",   putPriority(todoSelected.priority));
-                        intent.putExtra("status", putStatus(todoSelected.status));
-                        intent.putExtra("date",getDateStr(todoSelected.date));
+                        intent.putExtra("uid", todoSelected.getId());
+                        intent.putExtra("task", todoSelected.getText());
+                        intent.putExtra("priority",   putPriority(todoSelected.getPriority()));
+                        intent.putExtra("status", putStatus(todoSelected.getStatus()));
+                        intent.putExtra("date",getDateStr(todoSelected.getDate()));
                         intent.putExtra("position", position);
                         startActivityForResult(intent, 2);
 
-                        Log.d("TAG", "todo to edit: " + todoSelected.priority);
-                        Log.d("TAG", "todo to edit: " + todoSelected.status);
+                        Log.d("TAG", "id of todo selected" + todoSelected.getId());
+
+
+                        getTodo(todoSelected);
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -94,6 +113,19 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
+    }
+
+    public  List displayData() {
+
+        List<Todo> data = new ArrayList<Todo>();
+
+        if (todoDatabase.getTodosCount() > 0) {
+           data = queryAll();
+        } else {
+            data = getData();
+        }
+
+        return  data;
     }
 
     public List getData() {
@@ -134,13 +166,63 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         newTodo.priority = todo.priority;
 
         todos.add(newTodo);
+
+        todoDatabase.insertTodo(newTodo);
+
         adapter.notifyDataSetChanged();
 
+    }
+
+
+    public void updateTodo(Todo todo) {
+
+        todoDatabase.updateTodo(todo);
+
+
+        adapter.notifyDataSetChanged();
+
+    }
+
+
+
+    public void deleteTodo(Todo todo) {
+
+        todoDatabase.deleteTodo(todo);
+        adapter.notifyDataSetChanged();
+        Toast.makeText(this, "todo deleted: " +todo.getText()+" ("+todo.getId()+") " , Toast.LENGTH_LONG).show();
+
+    }
+
+
+
+    public List queryAll() {
+        todos.addAll(todoDatabase.getAllData());
+
+        return  todos;
+    }
+
+    public void getTodo(Todo todo) {
+
+        Todo aTodo = new Todo();
+        aTodo = todoDatabase.getTodo(todo);
+
+        Toast.makeText(this, "todo selected is " +aTodo.getText()+" ("+aTodo.getId()+") " , Toast.LENGTH_LONG).show();
     }
 
     public void AddTodoAction() {
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.turquoise)));
+
+        //get the drawable
+        Drawable myFabSrc = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_input_add, getTheme());
+
+        Drawable whiteFab = myFabSrc.getConstantState().newDrawable();
+
+        whiteFab.mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
+        fab.setImageDrawable(whiteFab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,21 +247,41 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         String status = data.getStringExtra("status");
         int position = data.getIntExtra("position", -1);
 
-        Todo newTodo = new Todo();
-        newTodo.text = text;
-        newTodo.date = getDate(date);
-        newTodo.status = setStatus(status);
-        newTodo.priority = setPriority(priority);
+
+        Todo todo = new Todo();
+        todo.setText(text);
+        todo.setDate(getDate(date));
+        todo.setStatus(setTodoStatus(status));
+        todo.setPriority(setTodoPriority(priority));
 
         if (resultCode == 1) {
             Log.d("TAG", "save");
-            addTodo(newTodo);
+            int uid = todos.size()+1;
+            todo.setId(uid);
+            addTodo(todo);
+
+            Toast.makeText(this, "todo added: " +todo.getText()+" ("+todo.getId()+") " , Toast.LENGTH_LONG).show();
         }
 
         if (resultCode == 2) {
             Log.d("TAG", "edit");
             todos.remove(position);
-            todos.add(position, newTodo);
+            todos.add(position, todo);
+            int uid = data.getIntExtra("uid", -1);
+
+            todo.setId(uid);
+            updateTodo(todo);
+
+        }
+
+        if (resultCode == 3){
+
+            todos.remove(position);
+
+            int uid = data.getIntExtra("uid", -1);
+            todo.setId(uid);
+            deleteTodo(todo);
+
         }
 
         Log.d("TAG", "todo saved: " + priority);
@@ -187,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
     }
 
-    public Todo.Priority setPriority(String priority) {
+    public Todo.Priority setTodoPriority(String priority) {
 
         //to initialize
         Todo.Priority priorityLevel = Todo.Priority.LOW;
@@ -213,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     public String putPriority(Todo.Priority  priority) {
 
         //to initialize
-        String priorityLevel = "medium";
+        String priorityLevel = "";
 
         switch (priority) {
             case LOW:
@@ -235,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
 
 
-    public Todo.Status setStatus(String status) {
+    public Todo.Status setTodoStatus(String status) {
 
         //to initialize
         Todo.Status todoStatus = ACTIVE;

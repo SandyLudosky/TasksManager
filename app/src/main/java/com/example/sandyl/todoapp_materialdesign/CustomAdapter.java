@@ -47,7 +47,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
 
         Todo currentTodo = todos.get(position);
-        String currentTodoPriority = currentTodo.setPriority(currentTodo.priority);
+        String currentTodoPriority = currentTodo.setTodoPriority(currentTodo.priority);
         String dateView = calculateDueDate(currentTodo.date);
 
         holder.taskView.setText(currentTodo.text);
