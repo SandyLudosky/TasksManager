@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.R.attr.id;
+
 public class EditTodoActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener  {
 
     private String TAG;
@@ -40,6 +42,7 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
     Spinner statusSpinner;
 
     String todo;
+    int uid;
     String priorityLevel;
     String dateStr;
     String statusSelected;
@@ -80,7 +83,7 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.add_todo_menu, menu);
+        getMenuInflater().inflate(R.menu.edit_todo_menu, menu);
 
 
         return true;
@@ -94,6 +97,12 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.action_delete:
+
+                deleteTask();
+                finish();
+                return true;
+
             case R.id.action_save:
 
                 saveTask();
@@ -116,6 +125,7 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
     public void setTodoToEdit() {
 
         Intent intent = getIntent();
+        uid = intent.getIntExtra("uid", -1);
         String todoName = intent.getStringExtra("task");
         String todoPriority = intent.getStringExtra("priority");
         String todoStatus = intent.getStringExtra("status");
@@ -127,8 +137,7 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
         dateSelected = todoDate;
 
-        Log.d("TAG", "priority selected : " + todoPriority);
-        Log.d("TAG", "status selected : " + todoStatus);
+        Log.d("TAG", "id of todo set to edit : " + uid);
 
         //setting spinners to selected value from todo selected
 
@@ -156,14 +165,31 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
     public void saveTask() {
 
         Intent intent = new Intent();
+        intent.putExtra("uid", uid);
         intent.putExtra("task", todoEditText.getText().toString());
         intent.putExtra("priority", priorityLevel);
         intent.putExtra("date", dateSelected);
         intent.putExtra("status", statusSelected);
         intent.putExtra("position", position);
+
+
+        Log.d("TAG", "id of todo saved : " + id);
         setResult(2, intent);
 
     }
+
+    public void deleteTask() {
+        Intent intent = new Intent();
+        intent.putExtra("uid", uid);
+        intent.putExtra("task", todoEditText.getText().toString());
+        intent.putExtra("priority", priorityLevel);
+        intent.putExtra("date", dateSelected);
+        intent.putExtra("status", statusSelected);
+        intent.putExtra("position", position);
+        setResult(3, intent);
+
+    }
+
 
 
     //on click listener to show calendar

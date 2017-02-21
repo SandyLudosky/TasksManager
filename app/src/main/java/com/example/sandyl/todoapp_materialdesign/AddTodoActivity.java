@@ -128,8 +128,6 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
         intent.putExtra("position", position);
         setResult(1, intent);
 
-        Log.d("TAG", "priority selected : " + priorityLevel);
-        Log.d("TAG", "status selected : " + statusSelected);
 
     }
 

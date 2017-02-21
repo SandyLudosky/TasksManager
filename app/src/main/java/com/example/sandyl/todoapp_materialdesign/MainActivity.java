@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         todos = new ArrayList<Todo>();
 
         todos = getData();
-        queryAll();
+        todos = queryAll();
 
         adapter = new CustomAdapter(MainActivity.this, todos);
         recyclerView.setAdapter(adapter);
@@ -68,11 +68,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         AddTodoAction();
         setRecyclerViewClickListener();
-
-
-
-
-
 
     }
 
@@ -85,15 +80,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
                         Todo todoSelected  = todos.get(position);
                         Intent intent = new Intent(MainActivity.this, EditTodoActivity.class);
-                        intent.putExtra("task", todoSelected.text);
-                        intent.putExtra("priority",   putPriority(todoSelected.priority));
-                        intent.putExtra("status", putStatus(todoSelected.status));
-                        intent.putExtra("date",getDateStr(todoSelected.date));
+                        intent.putExtra("uid", todoSelected.getId());
+                        intent.putExtra("task", todoSelected.getText());
+                        intent.putExtra("priority",   putPriority(todoSelected.getPriority()));
+                        intent.putExtra("status", putStatus(todoSelected.getStatus()));
+                        intent.putExtra("date",getDateStr(todoSelected.getDate()));
                         intent.putExtra("position", position);
                         startActivityForResult(intent, 2);
 
-                        Log.d("TAG", "todo to edit: " + todoSelected.priority);
-                        Log.d("TAG", "todo to edit: " + todoSelected.status);
+                        Log.d("TAG", "id of todo selected" + todoSelected.getId());
+
 
                         getTodo(todoSelected);
                     }
@@ -118,6 +114,19 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
+    }
+
+    public  List displayData() {
+
+        List<Todo> data = new ArrayList<Todo>();
+
+        if (todoDatabase.getTodosCount() > 0) {
+           data = queryAll();
+        } else {
+            data = getData();
+        }
+
+        return  data;
     }
 
     public List getData() {
@@ -159,20 +168,38 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         todos.add(newTodo);
 
-        long id = todoDatabase.insertTodo(newTodo);
-
-        if (id > 0) {
-            Toast.makeText(this,"new todo successfully added to database", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this,"error inserting to database", Toast.LENGTH_LONG).show();
-        }
+        todoDatabase.insertTodo(newTodo);
 
         adapter.notifyDataSetChanged();
 
     }
 
-    public void queryAll() {
+
+    public void updateTodo(Todo todo) {
+
+        todoDatabase.updateTodo(todo);
+
+
+        adapter.notifyDataSetChanged();
+
+    }
+
+
+
+    public void deleteTodo(Todo todo) {
+
+        todoDatabase.deleteTodo(todo);
+        adapter.notifyDataSetChanged();
+        Toast.makeText(this, "todo deleted: " +todo.getText()+" ("+todo.getId()+") " , Toast.LENGTH_LONG).show();
+
+    }
+
+
+
+    public List queryAll() {
         todos.addAll(todoDatabase.getAllData());
+
+        return  todos;
     }
 
     public void getTodo(Todo todo) {
@@ -221,21 +248,41 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         String status = data.getStringExtra("status");
         int position = data.getIntExtra("position", -1);
 
-        Todo newTodo = new Todo();
-        newTodo.text = text;
-        newTodo.date = getDate(date);
-        newTodo.status = setStatus(status);
-        newTodo.priority = setPriority(priority);
+
+        Todo todo = new Todo();
+        todo.setText(text);
+        todo.setDate(getDate(date));
+        todo.setStatus(setTodoStatus(status));
+        todo.setPriority(setTodoPriority(priority));
 
         if (resultCode == 1) {
             Log.d("TAG", "save");
-            addTodo(newTodo);
+            int uid = todos.size()+1;
+            todo.setId(uid);
+            addTodo(todo);
+
+            Toast.makeText(this, "todo added: " +todo.getText()+" ("+todo.getId()+") " , Toast.LENGTH_LONG).show();
         }
 
         if (resultCode == 2) {
             Log.d("TAG", "edit");
             todos.remove(position);
-            todos.add(position, newTodo);
+            todos.add(position, todo);
+            int uid = data.getIntExtra("uid", -1);
+
+            todo.setId(uid);
+            updateTodo(todo);
+
+        }
+
+        if (resultCode == 3){
+
+            todos.remove(position);
+
+            int uid = data.getIntExtra("uid", -1);
+            todo.setId(uid);
+            deleteTodo(todo);
+
         }
 
         Log.d("TAG", "todo saved: " + priority);
@@ -243,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
     }
 
-    public Todo.Priority setPriority(String priority) {
+    public Todo.Priority setTodoPriority(String priority) {
 
         //to initialize
         Todo.Priority priorityLevel = Todo.Priority.LOW;
@@ -291,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
 
 
-    public Todo.Status setStatus(String status) {
+    public Todo.Status setTodoStatus(String status) {
 
         //to initialize
         Todo.Status todoStatus = ACTIVE;

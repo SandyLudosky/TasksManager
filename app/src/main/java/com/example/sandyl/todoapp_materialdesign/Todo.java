@@ -28,6 +28,10 @@ public class Todo {
         return priority;
     }
 
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
     public Status getStatus() {
         return status;
     }
@@ -73,7 +77,7 @@ public class Todo {
     }
 
     //methods
-    public String setPriority(Priority priority) {
+    public String setTodoPriority(Priority priority) {
 
         String todoPriority = "";
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -23,7 +24,7 @@ import static com.example.sandyl.todoapp_materialdesign.Todo.Status.DONE;
 public class TodoDatabaseAdapter {
 
 
-
+    private String TAG;
     TodoDatabaseHelper todoDatabaseHelper;
 
     public TodoDatabaseAdapter (Context context) {
@@ -32,7 +33,7 @@ public class TodoDatabaseAdapter {
 
 
     //CREATE
-    public long insertTodo(Todo todo) {
+    public void insertTodo(Todo todo) {
 
         SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -41,10 +42,12 @@ public class TodoDatabaseAdapter {
         values.put(todoDatabaseHelper.KEY_PRIORITY, putPriority(todo.getPriority())); // Todo priority
         values.put(todoDatabaseHelper.KEY_DATE, getDateStr(todo.getDate())); // Todo date
 
+        Log.d("TAG", "todo added: " + String.valueOf(todo.getId()));
 
-        long id = db.insert(todoDatabaseHelper.TABLE_TODOS, null, values);
 
-        return id;
+       db.insert(todoDatabaseHelper.TABLE_TODOS, null, values);
+
+
     }
 
 
@@ -69,11 +72,11 @@ public class TodoDatabaseAdapter {
                 String date =cursor.getString(getColIndex(cursor, todoDatabaseHelper.KEY_DATE));
 
                 Todo todo = new Todo();
-                todo._id = uid;
-                todo.text =  name;
-                todo.status = setTodoStatus(status);
-                todo.priority = setTodoPriority(priority);
-                todo.date = getDate(date);
+                todo.setId(uid);
+                todo.setText(name);
+                todo.setStatus(setTodoStatus(status));
+                todo.setPriority(setTodoPriority(priority));
+                todo.setDate(getDate(date));
 
                 todos.add(todo);
             } while (cursor.moveToNext());
@@ -90,9 +93,9 @@ public class TodoDatabaseAdapter {
         Todo aTodo = new Todo();
 
         String [] cols = {todoDatabaseHelper.KEY_ID, todoDatabaseHelper.KEY_NAME, todoDatabaseHelper.KEY_STATUS, todoDatabaseHelper.KEY_PRIORITY, todoDatabaseHelper.KEY_DATE};
-        String arg =  todoDatabaseHelper.KEY_ID+ "= "+todo.getId()+"" ;
+        String selectionArgs =  todoDatabaseHelper.KEY_ID+ "= "+todo.getId()+"" ;
 
-        Cursor cursor = db.query(todoDatabaseHelper.TABLE_TODOS, cols, arg, null,null, null, null);
+        Cursor cursor = db.query(todoDatabaseHelper.TABLE_TODOS, cols, selectionArgs, null,null, null, null);
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -105,19 +108,54 @@ public class TodoDatabaseAdapter {
                 String date =cursor.getString(getColIndex(cursor, todoDatabaseHelper.KEY_DATE));
 
                 todo._id = uid;
-                todo.text =  name;
-                todo.status = setTodoStatus(status);
-                todo.priority = setTodoPriority(priority);
-                todo.date = getDate(date);
+                todo.setId(uid);
+                todo.setText(name);
+                todo.setStatus(setTodoStatus(status));
+                todo.setPriority(setTodoPriority(priority));
+                todo.setDate(getDate(date));
 
             } while (cursor.moveToNext());
         }
-
+        Log.d("TAG", "todo selected: " + String.valueOf(todo.getId()));
         return todo;
 
     }
 
     //UPDATE
+    public void updateTodo(Todo todo) {
+
+        SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(todoDatabaseHelper.KEY_NAME, todo.getText()); // Todo text
+        values.put(todoDatabaseHelper.KEY_STATUS, putStatus(todo.getStatus())); // Todo status
+        values.put(todoDatabaseHelper.KEY_PRIORITY, putPriority(todo.getPriority())); // Todo priority
+        values.put(todoDatabaseHelper.KEY_DATE, getDateStr(todo.getDate())); // Todo date
+
+        String whereClause = todoDatabaseHelper.KEY_ID +" =? ";
+        String[] whereArgs = {String.valueOf(todo.getId())};
+
+        db.update(todoDatabaseHelper.TABLE_TODOS, values, whereClause, whereArgs);
+
+       Log.d("TAG", "todo updated: " + String.valueOf(todo.getId()));
+
+        db.close();
+
+    }
+
+    // Deleting single contact
+    public void deleteTodo(Todo todo) {
+        SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
+
+        String whereClause = todoDatabaseHelper.KEY_ID +" =? ";
+        String[] whereArgs = {String.valueOf(todo.getId())};
+
+        db.delete(todoDatabaseHelper.TABLE_TODOS, whereClause, whereArgs);
+
+        Log.d("TAG", "todo deteled: " + String.valueOf(todo.getId()));
+
+        db.close();
+    }
 
 
     //DELETE
@@ -131,6 +169,21 @@ public class TodoDatabaseAdapter {
 
     }
 
+
+    //get DATA count
+
+    // Getting contacts Count
+    public int getTodosCount() {
+
+        SQLiteDatabase db = todoDatabaseHelper.getReadableDatabase();
+        String [] cols = {todoDatabaseHelper.KEY_ID, todoDatabaseHelper.KEY_NAME, todoDatabaseHelper.KEY_STATUS, todoDatabaseHelper.KEY_PRIORITY, todoDatabaseHelper.KEY_DATE};
+        Cursor cursor = db.query(todoDatabaseHelper.TABLE_TODOS, cols, null, null,null, null, null);
+
+        cursor.close();
+
+        // return count
+        return cursor.getCount();
+    }
 
     //Status
     public String putStatus(Todo.Status  status) {
@@ -253,7 +306,7 @@ public class TodoDatabaseAdapter {
 
         // All Static variables
         // Database Version - to update after every change in db schema
-        private static final int DATABASE_VERSION = 6;
+        private static final int DATABASE_VERSION = 10;
 
         // Database Name
         private static final String DATABASE_NAME = "todosManager.db";
@@ -262,7 +315,7 @@ public class TodoDatabaseAdapter {
         private static final String TABLE_TODOS = "TODOS";
 
         //Table Columns names
-        private static final String KEY_ID = "_id";
+        private static final String KEY_ID = "id";
         private static final String KEY_NAME = "Name";
         private static final String KEY_STATUS = "Status";
         private static final String KEY_PRIORITY = "Priority";
