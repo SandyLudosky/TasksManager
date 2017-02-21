@@ -38,8 +38,8 @@ public class TodoDatabaseAdapter {
         SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(todoDatabaseHelper.KEY_NAME, todo.getText()); // Todo text
-        values.put(todoDatabaseHelper.KEY_STATUS, putStatus(todo.getStatus())); // Todo status
-        values.put(todoDatabaseHelper.KEY_PRIORITY, putPriority(todo.getPriority())); // Todo priority
+        values.put(todoDatabaseHelper.KEY_STATUS, putTodoStatus(todo.getStatus())); // Todo status
+        values.put(todoDatabaseHelper.KEY_PRIORITY, putTodoPriority(todo.getPriority())); // Todo priority
         values.put(todoDatabaseHelper.KEY_DATE, getDateStr(todo.getDate())); // Todo date
 
         Log.d("TAG", "todo added: " + String.valueOf(todo.getId()));
@@ -128,8 +128,8 @@ public class TodoDatabaseAdapter {
 
         ContentValues values = new ContentValues();
         values.put(todoDatabaseHelper.KEY_NAME, todo.getText()); // Todo text
-        values.put(todoDatabaseHelper.KEY_STATUS, putStatus(todo.getStatus())); // Todo status
-        values.put(todoDatabaseHelper.KEY_PRIORITY, putPriority(todo.getPriority())); // Todo priority
+        values.put(todoDatabaseHelper.KEY_STATUS, putTodoStatus(todo.getStatus())); // Todo status
+        values.put(todoDatabaseHelper.KEY_PRIORITY, putTodoPriority(todo.getPriority())); // Todo priority
         values.put(todoDatabaseHelper.KEY_DATE, getDateStr(todo.getDate())); // Todo date
 
         String whereClause = todoDatabaseHelper.KEY_ID +" =? ";
@@ -175,18 +175,17 @@ public class TodoDatabaseAdapter {
     // Getting contacts Count
     public int getTodosCount() {
 
+        String countQuery = "SELECT  * FROM " + todoDatabaseHelper.TABLE_TODOS;
         SQLiteDatabase db = todoDatabaseHelper.getReadableDatabase();
-        String [] cols = {todoDatabaseHelper.KEY_ID, todoDatabaseHelper.KEY_NAME, todoDatabaseHelper.KEY_STATUS, todoDatabaseHelper.KEY_PRIORITY, todoDatabaseHelper.KEY_DATE};
-        Cursor cursor = db.query(todoDatabaseHelper.TABLE_TODOS, cols, null, null,null, null, null);
-
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int cnt = cursor.getCount();
         cursor.close();
+        return cnt;
 
-        // return count
-        return cursor.getCount();
     }
 
     //Status
-    public String putStatus(Todo.Status  status) {
+    public String putTodoStatus(Todo.Status  status) {
 
         //to initialize
         String todoStatus = new String();
@@ -225,10 +224,10 @@ public class TodoDatabaseAdapter {
     }
 
     //Priority
-    public String putPriority(Todo.Priority  priority) {
+    public String putTodoPriority(Todo.Priority  priority) {
 
         //to initialize
-        String priorityLevel = "medium";
+        String priorityLevel = "";
 
         switch (priority) {
             case LOW:
@@ -306,7 +305,7 @@ public class TodoDatabaseAdapter {
 
         // All Static variables
         // Database Version - to update after every change in db schema
-        private static final int DATABASE_VERSION = 10;
+        private static final int DATABASE_VERSION = 11;
 
         // Database Name
         private static final String DATABASE_NAME = "todosManager.db";

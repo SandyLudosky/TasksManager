@@ -58,8 +58,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         recyclerView = (RecyclerView) findViewById(R.id.rvItems);
         todos = new ArrayList<Todo>();
 
-        todos = getData();
-        todos = queryAll();
+        displayData();
 
         adapter = new CustomAdapter(MainActivity.this, todos);
         recyclerView.setAdapter(adapter);
@@ -316,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     public String putPriority(Todo.Priority  priority) {
 
         //to initialize
-        String priorityLevel = "medium";
+        String priorityLevel = "";
 
         switch (priority) {
             case LOW:
