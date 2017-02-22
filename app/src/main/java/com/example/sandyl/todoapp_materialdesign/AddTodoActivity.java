@@ -67,8 +67,14 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
         switch (id) {
             case R.id.action_save:
 
-                saveTask();
-                finish();
+                if(!todoEditText.getText().toString().matches("")) {
+                    saveTask();
+                    finish();
+                } else {
+                    todoEditText.setText("PLEASE ADD TASK");
+                    todoEditText.setTextColor(getResources().getColor(R.color.colorAccent));
+                }
+
                 return true;
 
             case R.id.action_dismiss:
@@ -90,6 +96,15 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
 
         todoEditText = (EditText) findViewById(R.id.todoEditText);
         dateTextView = (TextView) findViewById(R.id.dateTextView);
+
+        todoEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                todoEditText.setText("");
+                todoEditText.setTextColor(getResources().getColor(R.color.colorPrimary));
+            }
+
+        });
 
         addToolbar();
         addListenerOnAddDateBtn();

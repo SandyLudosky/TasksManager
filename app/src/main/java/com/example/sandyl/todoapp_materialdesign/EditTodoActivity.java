@@ -39,6 +39,7 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
     RadioButton high;
     RadioButton low;
     Spinner statusSpinner;
+    Button dateButton;
 
     String todo;
     int uid;
@@ -65,6 +66,8 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
         todoEditText = (EditText) findViewById(R.id.todoEditText);
         dateTextView = (TextView) findViewById(R.id.dateTextView);
+        dateButton = (Button) findViewById(R.id.addButton);
+        dateButton.setText("CHANGE");
 
         addToolbar();
         addListenerOnAddDateBtn();
