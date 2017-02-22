@@ -8,14 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import static com.example.sandyl.todoapp_materialdesign.Todo.Status.ACTIVE;
-import static com.example.sandyl.todoapp_materialdesign.Todo.Status.DONE;
 
 /**
  * Created by sandyl on 2017-02-20.
@@ -26,6 +20,7 @@ public class TodoDatabaseAdapter {
 
     private String TAG;
     TodoDatabaseHelper todoDatabaseHelper;
+    TodoManager todoManager = new TodoManager();
 
     public TodoDatabaseAdapter (Context context) {
         todoDatabaseHelper = new TodoDatabaseHelper(context);
@@ -38,9 +33,9 @@ public class TodoDatabaseAdapter {
         SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(todoDatabaseHelper.KEY_NAME, todo.getText()); // Todo text
-        values.put(todoDatabaseHelper.KEY_STATUS, putTodoStatus(todo.getStatus())); // Todo status
-        values.put(todoDatabaseHelper.KEY_PRIORITY, putTodoPriority(todo.getPriority())); // Todo priority
-        values.put(todoDatabaseHelper.KEY_DATE, getDateStr(todo.getDate())); // Todo date
+        values.put(todoDatabaseHelper.KEY_STATUS, todoManager.putTodoStatus(todo.getStatus())); // Todo status
+        values.put(todoDatabaseHelper.KEY_PRIORITY, todoManager.putTodoPriority(todo.getPriority())); // Todo priority
+        values.put(todoDatabaseHelper.KEY_DATE, todoManager.getDateStr(todo.getDate())); // Todo date
 
         Log.d("TAG", "todo added: " + String.valueOf(todo.getId()));
 
@@ -74,9 +69,9 @@ public class TodoDatabaseAdapter {
                 Todo todo = new Todo();
                 todo.setId(uid);
                 todo.setText(name);
-                todo.setStatus(setTodoStatus(status));
-                todo.setPriority(setTodoPriority(priority));
-                todo.setDate(getDate(date));
+                todo.setStatus(todoManager.setTodoStatus(status));
+                todo.setPriority(todoManager.setTodoPriority(priority));
+                todo.setDate(todoManager.getDate(date));
 
                 todos.add(todo);
             } while (cursor.moveToNext());
@@ -110,9 +105,9 @@ public class TodoDatabaseAdapter {
                 todo._id = uid;
                 todo.setId(uid);
                 todo.setText(name);
-                todo.setStatus(setTodoStatus(status));
-                todo.setPriority(setTodoPriority(priority));
-                todo.setDate(getDate(date));
+                todo.setStatus(todoManager.setTodoStatus(status));
+                todo.setPriority(todoManager.setTodoPriority(priority));
+                todo.setDate(todoManager.getDate(date));
 
             } while (cursor.moveToNext());
         }
@@ -128,9 +123,9 @@ public class TodoDatabaseAdapter {
 
         ContentValues values = new ContentValues();
         values.put(todoDatabaseHelper.KEY_NAME, todo.getText()); // Todo text
-        values.put(todoDatabaseHelper.KEY_STATUS, putTodoStatus(todo.getStatus())); // Todo status
-        values.put(todoDatabaseHelper.KEY_PRIORITY, putTodoPriority(todo.getPriority())); // Todo priority
-        values.put(todoDatabaseHelper.KEY_DATE, getDateStr(todo.getDate())); // Todo date
+        values.put(todoDatabaseHelper.KEY_STATUS, todoManager.putTodoStatus(todo.getStatus())); // Todo status
+        values.put(todoDatabaseHelper.KEY_PRIORITY, todoManager.putTodoPriority(todo.getPriority())); // Todo priority
+        values.put(todoDatabaseHelper.KEY_DATE, todoManager.getDateStr(todo.getDate())); // Todo date
 
         String whereClause = todoDatabaseHelper.KEY_ID +" =? ";
         String[] whereArgs = {String.valueOf(todo.getId())};
@@ -182,122 +177,6 @@ public class TodoDatabaseAdapter {
         cursor.close();
         return cnt;
 
-    }
-
-    //Status
-    public String putTodoStatus(Todo.Status  status) {
-
-        //to initialize
-        String todoStatus = new String();
-
-        switch (status) {
-            case ACTIVE:
-                todoStatus = "active";
-                break;
-
-            case DONE:
-                todoStatus= "done";
-                break;
-
-        }
-        return  todoStatus;
-    }
-
-
-    public Todo.Status setTodoStatus(String status) {
-
-        //to initialize
-        Todo.Status todoStatus = ACTIVE;
-
-        switch (status.toLowerCase()) {
-            case "active":
-                todoStatus = ACTIVE;
-                break;
-
-            case "done":
-                todoStatus = DONE;
-                break;
-
-        }
-
-        return  todoStatus;
-    }
-
-    //Priority
-    public String putTodoPriority(Todo.Priority  priority) {
-
-        //to initialize
-        String priorityLevel = "";
-
-        switch (priority) {
-            case LOW:
-                priorityLevel = "low";
-                break;
-
-            case MEDIUM:
-                priorityLevel = "medium";
-                break;
-
-            case HIGH:
-                priorityLevel = "high";
-                break;
-
-        }
-        return  priorityLevel;
-    }
-
-
-    public Todo.Priority setTodoPriority(String priority) {
-
-        //to initialize
-        Todo.Priority priorityLevel = Todo.Priority.LOW;
-
-        switch (priority.toLowerCase()) {
-            case "low":
-                priorityLevel = Todo.Priority.LOW;
-                break;
-
-            case "medium":
-                priorityLevel = Todo.Priority.MEDIUM;
-                break;
-
-            case "high":
-                priorityLevel = Todo.Priority.HIGH;
-                break;
-
-        }
-
-        return  priorityLevel;
-    }
-
-
-    //Date
-    public Date getDate(String dateStr) {
-
-        DateFormat dateFormat ;
-        Date date = new Date();
-        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-        try
-        {
-            date = (Date) dateFormat.parse(dateStr);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return date;
-
-    }
-
-    public String getDateStr(Date date) {
-
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-
-        String stringDate = formatter.format(date);
-
-        return  stringDate;
     }
 
 
