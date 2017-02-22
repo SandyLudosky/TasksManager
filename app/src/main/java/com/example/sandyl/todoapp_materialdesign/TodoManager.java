@@ -133,6 +133,21 @@ public class TodoManager {
         return  stringDate;
     }
 
+    public String convertDateToMilliseconds(String date) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("ss");
+        long timeInMilliseconds = 0;
+        try {
+            Date mDate = sdf.parse(date);
+             timeInMilliseconds = mDate.getTime();
+            System.out.println("Date in milli :: " + timeInMilliseconds);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Long.toString(timeInMilliseconds);
+    }
+
 
 
 }

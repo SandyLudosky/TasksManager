@@ -36,6 +36,7 @@ public class TodoDatabaseAdapter {
         values.put(todoDatabaseHelper.KEY_STATUS, todoManager.putTodoStatus(todo.getStatus())); // Todo status
         values.put(todoDatabaseHelper.KEY_PRIORITY, todoManager.putTodoPriority(todo.getPriority())); // Todo priority
         values.put(todoDatabaseHelper.KEY_DATE, todoManager.getDateStr(todo.getDate())); // Todo date
+        values.put(todoDatabaseHelper.KEY_DATE_MIL, todoManager.convertDateToMilliseconds(todoManager.getDateStr(todo.getDate()))); // date in milliseconds
 
         Log.d("TAG", "todo added: " + String.valueOf(todo.getId()));
 
@@ -54,7 +55,8 @@ public class TodoDatabaseAdapter {
 
         String [] cols = {todoDatabaseHelper.KEY_ID, todoDatabaseHelper.KEY_NAME, todoDatabaseHelper.KEY_STATUS, todoDatabaseHelper.KEY_PRIORITY, todoDatabaseHelper.KEY_DATE};
 
-        Cursor cursor = db.query(todoDatabaseHelper.TABLE_TODOS, cols, null, null,null, null, null);
+
+        Cursor cursor = db.query(todoDatabaseHelper.TABLE_TODOS, cols, null, null,null, null, todoDatabaseHelper.KEY_DATE_MIL+" ASC");
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -126,6 +128,7 @@ public class TodoDatabaseAdapter {
         values.put(todoDatabaseHelper.KEY_STATUS, todoManager.putTodoStatus(todo.getStatus())); // Todo status
         values.put(todoDatabaseHelper.KEY_PRIORITY, todoManager.putTodoPriority(todo.getPriority())); // Todo priority
         values.put(todoDatabaseHelper.KEY_DATE, todoManager.getDateStr(todo.getDate())); // Todo date
+        values.put(todoDatabaseHelper.KEY_DATE_MIL, todoManager.convertDateToMilliseconds(todoManager.getDateStr(todo.getDate()))); // date in
 
         String whereClause = todoDatabaseHelper.KEY_ID +" =? ";
         String[] whereArgs = {String.valueOf(todo.getId())};
@@ -184,7 +187,7 @@ public class TodoDatabaseAdapter {
 
         // All Static variables
         // Database Version - to update after every change in db schema
-        private static final int DATABASE_VERSION = 11;
+        private static final int DATABASE_VERSION = 12;
 
         // Database Name
         private static final String DATABASE_NAME = "todosManager.db";
@@ -198,6 +201,7 @@ public class TodoDatabaseAdapter {
         private static final String KEY_STATUS = "Status";
         private static final String KEY_PRIORITY = "Priority";
         private static final String KEY_DATE = "Date";
+        private static final String KEY_DATE_MIL = "DateInMil";
 
         private String TAG;
         private Context context;
@@ -208,8 +212,9 @@ public class TodoDatabaseAdapter {
                 +KEY_NAME+" VARCHAR(255), "
                 +KEY_STATUS +" VARCHAR(255),"
                 +KEY_PRIORITY+" VARCHAR(255),"
-                +KEY_DATE+" VARCHAR(255)" +
-                " );";
+                +KEY_DATE+" VARCHAR(255),"
+                +KEY_DATE_MIL+" VARCHAR(255)"
+                +" );";
 
         private static final String DROP_TABLE_TODOS = "DROP TABLE IF EXISTS "+TABLE_TODOS;
 

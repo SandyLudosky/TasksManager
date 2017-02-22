@@ -63,14 +63,15 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         setContentView(R.layout.activity_add_todo);
 
 
+        todoEditText = (EditText) findViewById(R.id.todoEditText);
+        dateTextView = (TextView) findViewById(R.id.dateTextView);
+
         addToolbar();
         addListenerOnAddDateBtn();
         addListenerOnRadioGroupButton();
         createStatusSpinner();
         setTodoToEdit();
 
-        todoEditText = (EditText) findViewById(R.id.todoEditText);
-        dateTextView = (TextView) findViewById(R.id.dateTextView);
         myCalendar = setDateOnView(dateSelected);
 
     }
@@ -132,7 +133,7 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
         dateSelected = todoDate;
 
-        Log.d("TAG", "id of todo set to edit : " + uid);
+        Log.d("TAG", "id of todo set to edit : " + todoName);
 
         //setting spinners to selected value from todo selected
 
