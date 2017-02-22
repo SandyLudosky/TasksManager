@@ -14,28 +14,28 @@ Extra hours to implement additional features
 
 The following **required** functionality is completed:
 
-* [x ] User can **successfully add and remove items** from the todo list
-* [x ] User can **tap a todo item in the list and bring up an edit screen for the todo item** and then have any changes to the text reflected in the todo list.
-* [ x] User can **persist todo items** and retrieve them properly on app restart
+* [x] User can **successfully add and remove items** from the todo list
+* [x] User can **tap a todo item in the list and bring up an edit screen for the todo item** and then have any changes to the text reflected in the todo list.
+* [x] User can **persist todo items** and retrieve them properly on app restart
 
 The following **optional** features are implemented:
 
-* [x ] Persist the todo items [into SQLite](http://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite) instead of a text file
-* [x ] Improve style of the todo items in the list [using a recycler view](https://guides.codepath.com/android/using-the-recyclerview)
-* [x ] Add support for completion due dates of todo items:  (and display within listview item) (due today, past due)
-* [x ] Add support with RadioGroupButton for selecting the priority of each todo item (and display in listview item)
-* [x ] Add support with Spinner for selecting status of each todo item (active, done) (and display in listview item)
+* [x] Persist the todo items [into SQLite](http://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite) instead of a text file
+* [x] Improve style of the todo items in the list [using a recycler view](https://guides.codepath.com/android/using-the-recyclerview)
+* [x] Add support for completion due dates of todo items:  (and display within listview item) (due today, past due)
+* [x] Add support with RadioGroupButton for selecting the priority of each todo item (and display in listview item)
+* [x] Add support with Spinner for selecting status of each todo item (active, done) (and display in listview item)
 
-* [x ] Tweak the style improving the UI / UX, play with colors, images or backgrounds
+* [x] Tweak the style improving the UI / UX, play with colors, images or backgrounds
 
 The following **additional** features are implemented:
 
 
 * [ ] Added Launch screen
-* [x ] Querying with “ASC” to sort tasks by date in listview
-* [x ] List anything else that you can get done to improve the app functionality!
-* [x ] Added Material Design and Floating Action Button library support
-* [x ] Applying Color coding for priority levels : low, medium and high
+* [x] Querying with “ASC” to sort tasks by date in listview
+* [x] List anything else that you can get done to improve the app functionality!
+* [x] Added Material Design and Floating Action Button library support
+* [x] Applying Color coding for priority levels : low, medium and high
 
 
 ## Video Walkthrough 
