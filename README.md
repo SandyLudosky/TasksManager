@@ -48,8 +48,10 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
-SQLiteOpenHelper because of the lack of visibility on the data structure. I need to troubleshoot Android Device Monitor where I was unable to look at database records and 
-I completed assignment with code refactoring. Upon implementing SQlitehelper database, I realized that I over complicated the code by adding enum custom data type in my Todo object Class. SQLite accepts data types such as : Text, real, int, none. So, I used helper methods to handle data type conversion back and forth : to save to the database and to fetch from database. I later refactored the code to include helper methods in 1 single class to avoid repetition.
+Describe any challenges encountered while building the app:
+
+SQLiteOpenHelper Database because of the lack of visibility on the data structure. I was not able to get a graphical view of the database records Android Device Monitor and it was challenging to control when things were not working as intended.
+
+Upon implementing the database, I realized that I over complicated the code by adding enum custom data type in my Todo object Class. SQLite accepts data types such as : Text, real, int, none. So, I used helper methods to handle data type conversion back and forth : to save to the database and to fetch from the database. I later refactored the code to include helper methods in one single class and avoid code repetitions.
 Areas of improvement would be to understand and learn more about best practices of app structure and design patterns, which I think would help in many other areas of programming.
 
