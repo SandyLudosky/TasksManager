@@ -15,6 +15,8 @@ public class TodoManager {
 
     public TodoManager () {}
 
+    //All helper functions listed here
+
     //Status
     public String putTodoStatus(Todo.Status  status) {
 
@@ -130,6 +132,7 @@ public class TodoManager {
 
         return  stringDate;
     }
+
 
 
 }

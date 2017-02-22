@@ -21,7 +21,6 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,25 +54,23 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
     int month;
     int year;
 
+    TodoManager todoManager = new TodoManager();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_todo);
 
-        todoEditText = (EditText) findViewById(R.id.todoEditText);
-        dateTextView = (TextView) findViewById(R.id.dateTextView);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-
+        addToolbar();
         addListenerOnAddDateBtn();
         addListenerOnRadioGroupButton();
         createStatusSpinner();
         setTodoToEdit();
+
+        todoEditText = (EditText) findViewById(R.id.todoEditText);
+        dateTextView = (TextView) findViewById(R.id.dateTextView);
         myCalendar = setDateOnView(dateSelected);
 
     }
@@ -144,77 +141,14 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
     }
 
-    final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
+    //Toolbar
+    public void addToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-            dateSelected = getStringDate(dayOfMonth,monthOfYear, (year - 1900));
-
-        }
-    };
-
-
-    public void createDialog() {
-        final EditText taskEditText = new EditText(this);
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Delete todo")
-                .setMessage("Are you sure you want to delete item from list ?")
-                .setView(taskEditText)
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        //send action for deletion
-                        sendAction(3);
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .create();
-        dialog.show();
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
-
-
-
-    public void sendAction(int result) {
-
-        Intent intent = new Intent();
-        intent.putExtra("uid", uid);
-        intent.putExtra("task", todoEditText.getText().toString());
-        intent.putExtra("priority", priorityLevel);
-        intent.putExtra("date", dateSelected);
-        intent.putExtra("status", statusSelected);
-        intent.putExtra("position", position);
-
-        //resultCode 2 = update and save
-        //resultCode 3 = delete
-        setResult(result, intent);
-        finish();
-
-    }
-
-
-    //on click listener to show calendar
-    public void addListenerOnAddDateBtn() {
-
-        addButton = (Button) findViewById(R.id.addButton);
-
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(EditTodoActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-    }
-
 
 
     //Radio Button Group to set priority level
@@ -250,7 +184,6 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
     }
 
-
     public void setSelectedPriority(String priority) {
 
         priorityRadioGroup = (RadioGroup) findViewById(R.id.priorityRadioGroup);
@@ -276,6 +209,7 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         }
     }
 
+    //Spinner
     public void createStatusSpinner() {
 
         statusSpinner = (Spinner) findViewById(R.id.statusSpinner);
@@ -330,11 +264,46 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         statusSelected = "active";
     }
 
-    // display date - http://stackoverflow.com/questions/14851285/how-to-get-datepicker-value-in-date-format
+
+
+
+    //on click listener to show calendar
+    public void addListenerOnAddDateBtn() {
+
+        addButton = (Button) findViewById(R.id.addButton);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(EditTodoActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+    }
+
+    //on change event listener to update date object before sending back to MainActivity
+    final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            dateSelected = getStringDate(dayOfMonth,monthOfYear, (year - 1900));
+
+        }
+    };
+
+    // display date on datePicker and dateTexView - http://stackoverflow.com/questions/14851285/how-to-get-datepicker-value-in-date-format
     public Calendar setDateOnView(String date) {
 
         dateTextView.setText(date);
-        Date dateSelected = getDate(date);
+        Date dateSelected = todoManager.getDate(date);
 
 
         Calendar calendar = Calendar.getInstance();
@@ -343,6 +312,8 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         return calendar;
     }
 
+
+    //functions
     public String getStringDate(int date, int month, int year) {
 
         Log.d("TAG", "date selected");
@@ -355,22 +326,43 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         return formatedDate;
     }
 
-    public Date getDate(String dateStr) {
+    //dialog to confirm task deletion
+    public void createDialog() {
+        final EditText taskEditText = new EditText(this);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Delete todo")
+                .setMessage("Are you sure you want to delete item from list ?")
+                .setView(taskEditText)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-        DateFormat dateFormat ;
-        Date date = new Date();
-        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                        //sends action for deletion
+                        sendAction(3);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        dialog.show();
+    }
 
-        try
-        {
-            date = (Date) dateFormat.parse(dateStr);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
 
-        return date;
+    //handles result codes + data sent back to MainActivity
+    public void sendAction(int result) {
+
+        Intent intent = new Intent();
+        intent.putExtra("uid", uid);
+        intent.putExtra("task", todoEditText.getText().toString());
+        intent.putExtra("priority", priorityLevel);
+        intent.putExtra("date", dateSelected);
+        intent.putExtra("status", statusSelected);
+        intent.putExtra("position", position);
+
+        //resultCode 2 = update and save
+        //resultCode 3 = delete
+        setResult(result, intent);
+        finish();
 
     }
+
 }

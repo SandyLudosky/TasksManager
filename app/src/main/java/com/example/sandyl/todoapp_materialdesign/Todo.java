@@ -83,30 +83,4 @@ public class Todo {
         this.date = date;
     }
 
-    //methods
-    public String setTodoPriority(Priority priority) {
-
-        String todoPriority = "";
-
-        switch (priority) {
-
-            case LOW:
-                todoPriority = "low";
-                break;
-
-            case MEDIUM:
-                todoPriority = "medium";
-                break;
-
-            case HIGH:
-                todoPriority = "high";
-                break;
-
-            default:
-                todoPriority = "";
-                break;
-        }
-
-        return  todoPriority;
-    }
 }

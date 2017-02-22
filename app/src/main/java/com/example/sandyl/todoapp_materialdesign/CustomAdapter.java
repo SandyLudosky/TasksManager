@@ -25,7 +25,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
     private LayoutInflater inflater;
     List<Todo> todos = Collections.emptyList();
-
+    TodoManager todoManager = new TodoManager();
 
 
 
@@ -47,7 +47,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
 
         Todo currentTodo = todos.get(position);
-        String currentTodoPriority = currentTodo.setTodoPriority(currentTodo.priority);
+        String currentTodoPriority = todoManager.putTodoPriority(currentTodo.priority);
         String dateView = returnDaysCount(calculateDueDate(currentTodo.date));
 
         holder.taskView.setText(currentTodo.text);

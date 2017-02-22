@@ -18,14 +18,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static com.example.sandyl.todoapp_materialdesign.Todo.Status.ACTIVE;
-import static com.example.sandyl.todoapp_materialdesign.Todo.Status.DONE;
 
 public class MainActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener {
 
@@ -39,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
     //database helper
     TodoDatabaseAdapter todoDatabase;
+    TodoManager todoManager = new TodoManager();
 
 
     @Override
@@ -81,9 +77,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
                         Intent intent = new Intent(MainActivity.this, EditTodoActivity.class);
                         intent.putExtra("uid", todoSelected.getId());
                         intent.putExtra("task", todoSelected.getText());
-                        intent.putExtra("priority",   putPriority(todoSelected.getPriority()));
-                        intent.putExtra("status", putStatus(todoSelected.getStatus()));
-                        intent.putExtra("date",getDateStr(todoSelected.getDate()));
+                        intent.putExtra("priority", todoManager.putTodoPriority(todoSelected.getPriority()));
+                        intent.putExtra("status", todoManager.putTodoStatus(todoSelected.getStatus()));
+                        intent.putExtra("date",todoManager.getDateStr(todoSelected.getDate()));
                         intent.putExtra("position", position);
                         startActivityForResult(intent, 2);
 
@@ -250,9 +246,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         Todo todo = new Todo();
         todo.setText(text);
-        todo.setDate(getDate(date));
-        todo.setStatus(setTodoStatus(status));
-        todo.setPriority(setTodoPriority(priority));
+        todo.setDate(todoManager.getDate(date));
+        todo.setStatus(todoManager.setTodoStatus(status));
+        todo.setPriority(todoManager.setTodoPriority(priority));
 
         if (resultCode == 1) {
             Log.d("TAG", "save");
@@ -289,118 +285,5 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
     }
 
-    public Todo.Priority setTodoPriority(String priority) {
-
-        //to initialize
-        Todo.Priority priorityLevel = Todo.Priority.LOW;
-
-        switch (priority.toLowerCase()) {
-            case "low":
-                priorityLevel = Todo.Priority.LOW;
-                break;
-
-            case "medium":
-                priorityLevel = Todo.Priority.MEDIUM;
-                break;
-
-            case "high":
-                priorityLevel = Todo.Priority.HIGH;
-                break;
-
-        }
-
-        return  priorityLevel;
-    }
-
-    public String putPriority(Todo.Priority  priority) {
-
-        //to initialize
-        String priorityLevel = "";
-
-        switch (priority) {
-            case LOW:
-                priorityLevel = "low";
-                break;
-
-            case MEDIUM:
-                priorityLevel = "medium";
-                break;
-
-            case HIGH:
-                priorityLevel = "high";
-                break;
-
-        }
-        return  priorityLevel;
-    }
-
-
-
-
-    public Todo.Status setTodoStatus(String status) {
-
-        //to initialize
-        Todo.Status todoStatus = ACTIVE;
-
-        switch (status.toLowerCase()) {
-            case "active":
-                todoStatus = ACTIVE;
-                break;
-
-            case "done":
-                todoStatus = DONE;
-                break;
-
-        }
-
-        return  todoStatus;
-    }
-
-    public String putStatus(Todo.Status  status) {
-
-        //to initialize
-        String todoStatus = new String();
-
-        switch (status) {
-            case ACTIVE:
-                todoStatus = "active";
-                break;
-
-            case DONE:
-                todoStatus= "done";
-                break;
-
-        }
-        return  todoStatus;
-    }
-
-
-    public Date getDate(String dateStr) {
-
-        DateFormat dateFormat ;
-        Date date = new Date();
-        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-        try
-        {
-            date = (Date) dateFormat.parse(dateStr);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return date;
-
-    }
-
-    public String getDateStr(Date date) {
-
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-
-        String stringDate = formatter.format(date);
-
-        return  stringDate;
-    }
 
 }
