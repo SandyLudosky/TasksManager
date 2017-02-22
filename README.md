@@ -25,17 +25,18 @@ The following **optional** features are implemented:
 * [x] Add support for completion due dates of todo items:  (and display within listview item) (due today, past due)
 * [x] Add support with RadioGroupButton for selecting the priority of each todo item (and display in listview item)
 * [x] Add support with Spinner for selecting status of each todo item (active, done) (and display in listview item)
-
 * [x] Tweak the style improving the UI / UX, play with colors, images or backgrounds
 
 The following **additional** features are implemented:
 
-
-* [ ] Added Launch screen
 * [x] Querying with “ASC” to sort tasks by date in listview
 * [x] List anything else that you can get done to improve the app functionality!
 * [x] Added Material Design and Floating Action Button library support
 * [x] Applying Color coding for priority levels : low, medium and high
+* [ ] Adding Launch screen
+* [ ] Adding Switch bar to toggle sort action
+* [ ] Adding DialogFragment to alert out due and past due tasks + See All action
+* [ ] Format due date to use day, week, month, years instead of days count like "due in ... days" = more user-friendly 
 
 
 ## Video Walkthrough 
