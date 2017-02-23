@@ -64,22 +64,20 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        Intent intent = new Intent();
+        intent.putExtra("task", todoEditText.getText().toString());
+        intent.putExtra("date", dateSelected);
+        intent.putExtra("priority", priorityLevel);
+        intent.putExtra("status", statusSelected);
+        intent.putExtra("position", position);
+
         switch (id) {
             case R.id.action_save:
-
-                if(!todoEditText.getText().toString().matches("")) {
-                    saveTask();
-                    finish();
-                } else {
-                    todoEditText.setText("PLEASE ADD TASK");
-                    todoEditText.setTextColor(getResources().getColor(R.color.colorAccent));
-                }
-
+                saveTask(intent);
                 return true;
 
             case R.id.action_dismiss:
-
-                finish();
+                dismissActivity(intent);
                 return true;
 
             default:
@@ -223,15 +221,21 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
 
 
     //functions
-    public void saveTask() {
+    public void saveTask(Intent intent) {
 
-        Intent intent = new Intent();
-        intent.putExtra("task", todoEditText.getText().toString());
-        intent.putExtra("date", dateSelected);
-        intent.putExtra("priority", priorityLevel);
-        intent.putExtra("status", statusSelected);
-        intent.putExtra("position", position);
-        setResult(1, intent);
+        if(!todoEditText.getText().toString().matches("")) {
+            setResult(1, intent);
+            finish();
+        } else {
+            todoEditText.setText("PLEASE ADD TASK");
+            todoEditText.setTextColor(getResources().getColor(R.color.colorAccent));
+        }
+
+    }
+
+    public void dismissActivity(Intent intent) {
+        setResult(0, intent);
+        finish();
     }
 
     public String getStringDate(int date, int month, int year) {

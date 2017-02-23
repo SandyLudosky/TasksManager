@@ -31,6 +31,7 @@
         android:layout_marginStart="22dp"
         android:layout_marginTop="28dp"
         android:id="@+id/textView"
+        android:textStyle="bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <EditText
@@ -56,6 +57,7 @@
         android:layout_marginStart="22dp"
         android:layout_marginTop="28dp"
         android:id="@+id/textView2"
+        android:textStyle="bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
 
@@ -97,8 +99,9 @@
         android:layout_below="@+id/priorityRadioGroup"
         android:layout_alignLeft="@+id/priorityRadioGroup"
         android:layout_alignStart="@+id/priorityRadioGroup"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:id="@+id/textView4"
+        android:textStyle="bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <Button
@@ -108,7 +111,7 @@
         android:layout_below="@+id/priorityRadioGroup"
         android:layout_toRightOf="@+id/dateTextView"
         android:layout_toEndOf="@+id/dateTextView"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="29dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginStart="15dp"
@@ -127,11 +130,12 @@
         android:text="Status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:id="@+id/textView8"
         android:layout_below="@+id/addButton"
         android:layout_alignLeft="@+id/textView4"
         android:layout_alignStart="@+id/textView4"
+        android:textStyle="bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <Spinner
@@ -143,8 +147,8 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="13dp"
-        android:background="#ffffff"
         android:padding="15dp"
+        style="@style/spinner_style"
         android:id="@+id/statusSpinner" />
 
 

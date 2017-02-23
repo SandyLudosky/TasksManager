@@ -106,12 +106,10 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
             case R.id.action_save:
                 //sends action for update
                 sendAction(2);
-                finish();
                 return true;
 
             case R.id.action_dismiss:
                 sendAction(2);
-                finish();
                 return true;
 
             default:
@@ -133,13 +131,20 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
         todoEditText.setText(todoName);
         dateTextView.setText(todoDate);
-
         dateSelected = todoDate;
 
-        Log.d("TAG", "id of todo set to edit : " + todoName);
+
+        todoEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                todoEditText.setText("");
+                todoEditText.setTextColor(getResources().getColor(R.color.colorPrimary));
+            }
+
+        });
+
 
         //setting spinners to selected value from todo selected
-
         setSelectedPriority(todoPriority);
         setSelectedStatus(todoStatus);
 
@@ -342,7 +347,9 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
                     public void onClick(DialogInterface dialog, int which) {
 
                         //sends action for deletion
-                        sendAction(3);
+                        Intent intent = new Intent();
+                        setResult(3, intent);
+                        finish();
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -362,10 +369,18 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         intent.putExtra("status", statusSelected);
         intent.putExtra("position", position);
 
-        //resultCode 2 = update and save
-        //resultCode 3 = delete
-        setResult(result, intent);
-        finish();
+
+        if(!todoEditText.getText().toString().matches("")) {
+
+            //resultCode 2 = update and save
+            //resultCode 3 = handled in createDialog()
+            setResult(result, intent);
+            finish();
+
+        } else {
+            todoEditText.setText("PLEASE ADD TASK");
+            todoEditText.setTextColor(getResources().getColor(R.color.colorAccent));
+        }
 
     }
 
