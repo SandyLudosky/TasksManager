@@ -140,6 +140,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
         if ((int)dayCount == 0) {
             stringDate = "due Today \uD83D\uDCA1";
+        } else if ((int)dayCount < 0) {
+            stringDate = "overdue";
         } else {
             stringDate = formatter.format(date);
         }
