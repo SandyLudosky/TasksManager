@@ -51,8 +51,10 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 Describe any challenges encountered while building the app:
 
-SQLiteOpenHelper Database because of the lack of visibility on the data structure. I was not able to get a graphical view of the database records Android Device Monitor and it was challenging to control when things were not working as intended.
+Implementing SQLite Database was a challenge because of the lack of visibility on the data structure. I was not able to get a graphical view of the database records using Android Device Monitor. I felt limited in my ability to debug when things were not working as intended.
 
-Upon implementing the database, I realized that I over complicated the code by adding enum custom data type in my Todo object Class. SQLite accepts data types such as : Text, real, int, none. So, I used helper methods to handle data type conversion back and forth : to save to the database and to fetch from the database. I later refactored the code to include helper methods in one single class and avoid code repetitions.
+Also, I realized that I over complicated the code by adding enum custom data types in my Todo object Class. SQLite accepts data types such as : Text, real, int, none. So, I used helper methods to handle data type conversion back and forth : to save to the database and to fetch from the database. I later refactored the code to include helper methods in one single class and remove code repetitions.
 Areas of improvement would be to understand and learn more about best practices of app structure and design patterns, which I think would help in many other areas of programming.
+
+Finally, customizing the spinner, that I use to select a task's status, was not straighforward. Resources from stackoverflow helped a lot. Mobile App design is one area on which I really want to focus and get better at.
 
