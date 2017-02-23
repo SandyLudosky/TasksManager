@@ -3,6 +3,8 @@ package com.example.sandyl.todoapp_materialdesign;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,13 +47,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
 
-
         Todo currentTodo = todos.get(position);
         String currentTodoPriority = todoManager.putTodoPriority(currentTodo.priority);
         String dateView = returnDaysCount(calculateDueDate(currentTodo.date));
 
-        holder.taskView.setText(currentTodo.text);
-        holder.dateTextView.setText(dateView);
+
         holder.priorityTextView.setText(currentTodoPriority);
         holder.priorityTextView.setBackgroundColor(Color.parseColor(setColor(currentTodoPriority)));
 
@@ -62,6 +62,23 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
             holder.dateTextView.setTextColor(Color.parseColor("#000000"));
         }
 
+        if (currentTodo.getStatus() == Todo.Status.DONE)  {
+            holder.taskView.setText(currentTodo.text + " ✔️️");
+            holder.taskView.setTextColor(Color.parseColor("#cccccc"));
+            holder.taskView.setTypeface(null, Typeface.ITALIC);
+            holder.dateTextView.setTypeface(null, Typeface.ITALIC);
+            holder.dateTextView.setText("");
+            holder.taskView.setPaintFlags(holder.taskView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.priorityTextView.setVisibility(View.GONE);
+        } else {
+            holder.taskView.setText(currentTodo.text);
+            holder.taskView.setTextColor(Color.parseColor("#000000"));
+            holder.taskView.setTypeface(null, Typeface.NORMAL);
+            holder.dateTextView.setTypeface(null, Typeface.NORMAL);
+            holder.priorityTextView.setVisibility(View.VISIBLE);
+            holder.taskView.setPaintFlags(holder.taskView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.dateTextView.setText(dateView);
+        }
 
     }
 

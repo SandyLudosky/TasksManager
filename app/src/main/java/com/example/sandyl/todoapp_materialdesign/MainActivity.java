@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     private Toolbar mToolbar;
     RecyclerView recyclerView;
     List<Todo> todos;
-    CustomAdapter adapter;
+    public CustomAdapter adapter;
     private FloatingActionButton fab;
     TextView dateTextView;
 
@@ -51,10 +51,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        recyclerView = (RecyclerView) findViewById(R.id.rvItems);
         todos = new ArrayList<Todo>();
-
         displayData();
+
+        recyclerView = (RecyclerView) findViewById(R.id.rvItems);
 
         adapter = new CustomAdapter(MainActivity.this, todos);
         recyclerView.setAdapter(adapter);
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         setRecyclerViewClickListener();
 
     }
+
 
     public void setRecyclerViewClickListener() {
         recyclerView = (RecyclerView) findViewById(R.id.rvItems);
@@ -165,17 +166,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         todoDatabase.insertTodo(newTodo);
 
-        adapter.notifyDataSetChanged();
-
     }
 
 
     public void updateTodo(Todo todo) {
 
         todoDatabase.updateTodo(todo);
-
-
-        adapter.notifyDataSetChanged();
 
     }
 
@@ -184,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     public void deleteTodo(Todo todo) {
 
         todoDatabase.deleteTodo(todo);
-        adapter.notifyDataSetChanged();
         Toast.makeText(this, "todo deleted: " +todo.getText()+" ("+todo.getId()+") " , Toast.LENGTH_LONG).show();
 
     }
@@ -230,19 +225,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
 
         String text = data.getStringExtra("task");
         String priority = data.getStringExtra("priority");
         String date = data.getStringExtra("date");
         String status = data.getStringExtra("status");
         int position = data.getIntExtra("position", -1);
-
 
         Todo todo = new Todo();
         todo.setText(text);
@@ -280,9 +271,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
         }
 
-        Log.d("TAG", "todo saved: " + priority);
-        Log.d("TAG", "todo saved: " + status);
-
+        adapter.notifyDataSetChanged();
     }
 
 

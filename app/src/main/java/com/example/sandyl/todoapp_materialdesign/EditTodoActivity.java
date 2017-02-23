@@ -348,6 +348,13 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
                         //sends action for deletion
                         Intent intent = new Intent();
+                        intent.putExtra("uid", uid);
+                        intent.putExtra("task", todoEditText.getText().toString());
+                        intent.putExtra("priority", priorityLevel);
+                        intent.putExtra("date", dateSelected);
+                        intent.putExtra("status", statusSelected);
+                        intent.putExtra("position", position);
+
                         setResult(3, intent);
                         finish();
                     }
@@ -381,7 +388,6 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
             todoEditText.setText("PLEASE ADD TASK");
             todoEditText.setTextColor(getResources().getColor(R.color.colorAccent));
         }
-
     }
 
 }
