@@ -133,17 +133,6 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         dateTextView.setText(todoDate);
         dateSelected = todoDate;
 
-
-        todoEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                todoEditText.setText("");
-                todoEditText.setTextColor(getResources().getColor(R.color.colorPrimary));
-            }
-
-        });
-
-
         //setting spinners to selected value from todo selected
         setSelectedPriority(todoPriority);
         setSelectedStatus(todoStatus);
@@ -387,6 +376,16 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         } else {
             todoEditText.setText("PLEASE ADD TASK");
             todoEditText.setTextColor(getResources().getColor(R.color.colorAccent));
+
+            todoEditText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    todoEditText.setText("");
+                    todoEditText.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    }
+
+            });
+
         }
     }
 
