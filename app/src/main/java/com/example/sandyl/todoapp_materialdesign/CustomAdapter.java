@@ -49,7 +49,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
         Todo currentTodo = todos.get(position);
         String currentTodoPriority = todoManager.putTodoPriority(currentTodo.priority);
-        String dateView = returnDaysCount(calculateDueDate(currentTodo.date));
+        String dateView = getDateStr(currentTodo.getDate());
 
 
         holder.priorityTextView.setText(currentTodoPriority);
@@ -135,8 +135,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
     public String getDateStr(Date date) {
 
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        int dayCount = (int)calculateDueDate(date);
+        String stringDate = "";
 
-        String stringDate = formatter.format(date);
+        if ((int)dayCount == 0) {
+            stringDate = "due Today \uD83D\uDCA1";
+        } else {
+            stringDate = formatter.format(date);
+        }
 
         return  stringDate;
     }
@@ -156,25 +162,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
 
         float dayCount = (float) diff / (24 * 60 * 60 * 1000);
 
-        returnDaysCount(dayCount);
+       // returnDaysCount(dayCount, todoDate);
 
         return dayCount;
     }
-
-    public String returnDaysCount(float dayCount) {
-
-        String formattedCount;
-
-        if ((int)dayCount == 0) {
-            formattedCount = "due Today \uD83D\uDCA1";
-        } else {
-            formattedCount = ("due in " + (int)dayCount + " days");
-        }
-
-        return formattedCount;
-    }
-
-
 
 
 }
