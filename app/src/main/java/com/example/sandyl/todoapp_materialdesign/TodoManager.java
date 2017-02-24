@@ -11,6 +11,8 @@ import static com.example.sandyl.todoapp_materialdesign.Todo.Status.DONE;
  * Created by sandyl on 2017-02-21.
  */
 
+
+//1 simple class to store all functions
 public class TodoManager {
 
     public TodoManager () {}
@@ -36,7 +38,6 @@ public class TodoManager {
         return  todoStatus;
     }
 
-
     public Todo.Status setTodoStatus(String status) {
 
         //to initialize
@@ -52,7 +53,6 @@ public class TodoManager {
                 break;
 
         }
-
         return  todoStatus;
     }
 
@@ -99,7 +99,6 @@ public class TodoManager {
                 break;
 
         }
-
         return  priorityLevel;
     }
 
@@ -121,7 +120,6 @@ public class TodoManager {
         }
 
         return date;
-
     }
 
     public String getDateStr(Date date) {
@@ -147,7 +145,6 @@ public class TodoManager {
 
         return Long.toString(timeInMilliseconds);
     }
-
 
 
 }

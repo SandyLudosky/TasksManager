@@ -14,10 +14,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener {
@@ -44,13 +42,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         todoDatabase = new TodoDatabaseAdapter(this);
         // SQLiteDatabase db =  todoDatabase.todoDatabaseHelper.getWritableDatabase();
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         todos = new ArrayList<Todo>();
-        displayData();
+        todos = queryAllTodos();
 
         recyclerView = (RecyclerView) findViewById(R.id.rvItems);
 
@@ -59,9 +53,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
-        AddTodoAction();
+        addToolbar();;
+        AddTodoActionWithFloatingButton();
         setRecyclerViewClickListener();
 
+    }
+
+    //Toolbar
+    public void addToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
 
@@ -82,9 +85,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
                         intent.putExtra("position", position);
                         startActivityForResult(intent, 2);
 
-                        Log.d("TAG", "id of todo selected" + todoSelected.getId());
-
-
                         getTodo(todoSelected);
                     }
 
@@ -102,55 +102,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
     @Override
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
     }
 
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
     }
-
-    public  List displayData() {
-
-        List<Todo> data = new ArrayList<Todo>();
-
-        if (todoDatabase.getTodosCount() > 0) {
-           data = queryAll();
-        } else {
-            data = getData();
-        }
-
-        return  data;
-    }
-
-    public List getData() {
-
-        List<Todo> data;
-
-        List<String> tasks = new ArrayList<String>();
-        tasks.add("Task 1");
-        tasks.add("Task 2");
-        tasks.add("Task 3");
-        tasks.add("Task 4");
-
-        data =  new ArrayList<Todo>();
-
-
-        for (int i = 0; i < tasks.size() ; i++) {
-
-            Todo todo = new Todo();
-            todo.text = tasks.get(i);
-            todo.date = new Date();
-            todo.priority = Todo.Priority.LOW;
-            todo.status = Todo.Status.ACTIVE;
-
-            Log.d("TAG", todo.text);
-            data.add(todo);
-        }
-
-        return data;
-    }
-
 
     public void addTodo(Todo todo) {
 
@@ -161,44 +118,30 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         newTodo.priority = todo.priority;
 
         todos.add(newTodo);
-
         todoDatabase.insertTodo(newTodo);
-
     }
 
 
     public void updateTodo(Todo todo) {
-
         todoDatabase.updateTodo(todo);
-
     }
-
-
 
     public void deleteTodo(Todo todo) {
-
         todoDatabase.deleteTodo(todo);
-        Toast.makeText(this, "todo deleted: " +todo.getText()+" ("+todo.getId()+") " , Toast.LENGTH_LONG).show();
-
     }
 
 
-
-    public List queryAll() {
+    public List queryAllTodos() {
         todos.addAll(todoDatabase.getAllData());
-
         return  todos;
     }
 
     public void getTodo(Todo todo) {
-
         Todo aTodo = new Todo();
         aTodo = todoDatabase.getTodo(todo);
-
-        Toast.makeText(this, "todo selected is " +aTodo.getText()+" ("+aTodo.getId()+") " , Toast.LENGTH_LONG).show();
     }
 
-    public void AddTodoAction() {
+    public void AddTodoActionWithFloatingButton() {
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.turquoise)));
@@ -213,9 +156,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
                 startActivityForResult(intent, 1);
             }
         });
-
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -238,8 +179,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
             int uid = todos.size()+1;
             todo.setId(uid);
             addTodo(todo);
-
-            Toast.makeText(this, "todo added: " +todo.getText()+" ("+todo.getId()+") " , Toast.LENGTH_LONG).show();
         }
 
         if (resultCode == 2) {
@@ -250,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
             todo.setId(uid);
             updateTodo(todo);
-
         }
 
         if (resultCode == 3){
@@ -260,11 +198,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
             int uid = data.getIntExtra("uid", -1);
             todo.setId(uid);
             deleteTodo(todo);
-
         }
-
+        
         adapter.notifyDataSetChanged();
     }
-
-
 }

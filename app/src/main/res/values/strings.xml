@@ -3,4 +3,7 @@
     <string name="radio_low">Low</string>
     <string name="radio_medium">Medium</string>
     <string name="radio_high">High</string>
+    <string name="main_activity_title">Task Manager</string>
+    <string name="add_activity_title">Task Manager - Add Task</string>
+    <string name="edit_activity_title">Task Manager - Edit Task</string>
 </resources>

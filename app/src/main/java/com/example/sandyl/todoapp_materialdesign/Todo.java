@@ -8,7 +8,6 @@ import java.util.Date;
 
 public class Todo {
 
-
     //enums
     public enum Priority {
         LOW,
@@ -29,7 +28,6 @@ public class Todo {
     public Date date;
 
 
-
     //constructors
     public Todo() {}
 
@@ -42,7 +40,6 @@ public class Todo {
     public int getId() {
         return this._id;
     }
-
     public void setId(int id) {
         this._id = id;
     }
@@ -51,7 +48,6 @@ public class Todo {
     public String getText() {
         return this.text;
     }
-
     public void setText(String text) {
         this.text = text;
     }
@@ -60,7 +56,6 @@ public class Todo {
     public Status getStatus() {
         return this.status;
     }
-
     public void setStatus(Status status) {
         this.status = status;
     }
@@ -69,7 +64,6 @@ public class Todo {
     public Priority getPriority() {
         return this.priority;
     }
-
     public void setPriority(Priority priority) {
         this.priority = priority;
     }
@@ -78,7 +72,6 @@ public class Todo {
     public Date getDate() {
         return this.date;
     }
-
     public void setDate(Date date) {
         this.date = date;
     }

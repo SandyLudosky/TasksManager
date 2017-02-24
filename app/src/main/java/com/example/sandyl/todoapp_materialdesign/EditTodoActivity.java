@@ -63,7 +63,6 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_todo);
 
-
         todoEditText = (EditText) findViewById(R.id.todoEditText);
         dateTextView = (TextView) findViewById(R.id.dateTextView);
         dateButton = (Button) findViewById(R.id.addButton);
@@ -76,17 +75,13 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         setTodoToEdit();
 
         myCalendar = setDateOnView(dateSelected);
-
     }
-
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.edit_todo_menu, menu);
-
-
         return true;
     }
 
@@ -99,7 +94,6 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
         switch (id) {
             case R.id.action_delete:
-
                 createDialog();
                 return true;
 
@@ -115,7 +109,6 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
 
@@ -136,14 +129,12 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         //setting spinners to selected value from todo selected
         setSelectedPriority(todoPriority);
         setSelectedStatus(todoStatus);
-
     }
 
 
     //Toolbar
     public void addToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
@@ -174,7 +165,6 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
                         priorityLevel = "high";
                         break;
                 }
-
             }
         });
 
@@ -182,6 +172,7 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
     }
 
+    //set selected priority on radio group view
     public void setSelectedPriority(String priority) {
 
         priorityRadioGroup = (RadioGroup) findViewById(R.id.priorityRadioGroup);
@@ -217,19 +208,12 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, statusList);
-
-        // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Spinner click listener
         statusSpinner.setOnItemSelectedListener(this);
-
-        // attaching data adapter to spinner
         statusSpinner.setAdapter(dataAdapter);
-
     }
 
-
+    //set selected status on spinner view
     public void setSelectedStatus(String status) {
 
         statusSpinner = (Spinner) findViewById(R.id.statusSpinner);
@@ -245,11 +229,9 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
                 break;
 
             default:
-
         }
 
         statusSpinner.setSelection(((ArrayAdapter<String>)statusSpinner.getAdapter()).getPosition(statusToSet));
-
     }
 
     @Override
@@ -261,9 +243,6 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
     public void onNothingSelected(AdapterView<?> parent) {
         statusSelected = "active";
     }
-
-
-
 
     //on click listener to show calendar
     public void addListenerOnAddDateBtn() {
@@ -297,12 +276,11 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
         }
     };
 
-    // display date on datePicker and dateTexView - http://stackoverflow.com/questions/14851285/how-to-get-datepicker-value-in-date-format
+    // display date on datePicker and dateTexView
     public Calendar setDateOnView(String date) {
 
         dateTextView.setText(date);
         Date dateSelected = todoManager.getDate(date);
-
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateSelected);
@@ -313,8 +291,6 @@ public class EditTodoActivity extends AppCompatActivity  implements AdapterView.
 
     //functions
     public String getStringDate(int date, int month, int year) {
-
-        Log.d("TAG", "date selected");
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Date d = new Date(year, month, date);

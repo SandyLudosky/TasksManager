@@ -48,12 +48,10 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
     String dateSelected;
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.add_todo_menu, menu);
-
         return true;
     }
 
@@ -83,7 +81,6 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
 
@@ -108,13 +105,11 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
         addListenerOnAddDateBtn();
         addListenerOnRadioGroupButton();
         createStatusSpinner();
-
     }
 
     //Toolbar
     public void addToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
@@ -130,7 +125,6 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
             dateSelected = getStringDate(dayOfMonth,monthOfYear, (year - 1900));
-
         }
     };
 
@@ -179,7 +173,6 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
                         priorityLevel = "high";
                         break;
                 }
-
             }
         });
 
@@ -197,16 +190,9 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, statusList);
-
-        // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Spinner click listener
         statusSpinner.setOnItemSelectedListener(this);
-
-        // attaching data adapter to spinner
         statusSpinner.setAdapter(dataAdapter);
-
     }
 
     @Override
@@ -219,10 +205,8 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
         statusSelected = "active";
     }
 
-
     //functions
     public void saveTask(Intent intent) {
-
         if(!todoEditText.getText().toString().matches("")) {
             setResult(1, intent);
             finish();
@@ -230,7 +214,6 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
             todoEditText.setText("PLEASE ADD TASK");
             todoEditText.setTextColor(getResources().getColor(R.color.colorAccent));
         }
-
     }
 
     public void dismissActivity(Intent intent) {
@@ -240,8 +223,6 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
 
     public String getStringDate(int date, int month, int year) {
 
-        Log.d("TAG", "date selected");
-
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Date d = new Date(year, month, date);
         String formatedDate = sdf.format(d);
@@ -249,7 +230,4 @@ public class AddTodoActivity extends AppCompatActivity implements AdapterView.On
         dateTextView.setText(formatedDate);
         return formatedDate;
     }
-
-
-
 }

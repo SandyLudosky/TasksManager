@@ -29,12 +29,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
     List<Todo> todos = Collections.emptyList();
     TodoManager todoManager = new TodoManager();
 
-
-
     public CustomAdapter(Context context, List<Todo> data) {
         inflater = LayoutInflater.from(context);
         this.todos = data;
-
     }
 
     @Override
@@ -51,10 +48,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         String currentTodoPriority = todoManager.putTodoPriority(currentTodo.priority);
         String dateView = getDateStr(currentTodo.getDate());
 
-
         holder.priorityTextView.setText(currentTodoPriority);
         holder.priorityTextView.setBackgroundColor(Color.parseColor(setColor(currentTodoPriority)));
-
 
         if (calculateDueDate(currentTodo.date) < 1)  {
             holder.dateTextView.setTextColor(Color.parseColor("#e74c3c"));
@@ -62,6 +57,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
             holder.dateTextView.setTextColor(Color.parseColor("#000000"));
         }
 
+        //toggles view = .ACTIVE or .DONE
         if (currentTodo.getStatus() == Todo.Status.DONE)  {
             holder.taskView.setText(currentTodo.text + " ✔️️");
             holder.taskView.setTextColor(Color.parseColor("#cccccc"));
@@ -79,7 +75,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
             holder.taskView.setPaintFlags(holder.taskView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
             holder.dateTextView.setText(dateView);
         }
-
     }
 
     @Override
@@ -93,7 +88,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         public TextView taskView;
         public TextView priorityTextView;
         public TextView dateTextView;
-
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -131,7 +125,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         return  priorityColor;
     }
 
-
     public String getDateStr(Date date) {
 
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -145,14 +138,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         } else {
             stringDate = formatter.format(date);
         }
-
         return  stringDate;
     }
 
     public float calculateDueDate(Date todoDate) {
 
         Date today = new Date();
-
 
         Calendar todoCal = Calendar.getInstance();
         Calendar currentCal  = Calendar.getInstance();
@@ -165,7 +156,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ItemViewHo
         float dayCount = (float) diff / (24 * 60 * 60 * 1000);
 
        // returnDaysCount(dayCount, todoDate);
-
         return dayCount;
     }
 
