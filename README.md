@@ -7,7 +7,8 @@
 
 Submitted by: **Sandy Ludosky**
 
-Time spent: **35** hours spent in total
+Time spent: 
++ **35** hours spent in total
 + Extra **10** hours to implement additional features
 
 ## User Stories
