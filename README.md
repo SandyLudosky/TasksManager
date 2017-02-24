@@ -8,7 +8,7 @@
 Submitted by: **Sandy Ludosky**
 
 Time spent: **35** hours spent in total
-Extra hours to implement additional features
++ Extra **10** hours to implement additional features
 
 ## User Stories
 
@@ -33,10 +33,7 @@ The following **additional** features are implemented:
 * [x] List anything else that you can get done to improve the app functionality!
 * [x] Added Material Design and Floating Action Button library support
 * [x] Applying Color coding for priority levels : low, medium and high
-* [ ] Adding Launch screen
-* [ ] Adding Switch bar to toggle sort action
-* [ ] Adding DialogFragment to alert out due and past due tasks + See All action
-* [ ] Format due date to use day, week, month, years instead of days count like "due in ... days" = more user-friendly 
+* [x] Adding Launch screen
 
 
 ## Video Walkthrough 
