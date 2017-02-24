@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ public class TodoDatabaseAdapter {
         todoDatabaseHelper = new TodoDatabaseHelper(context);
     }
 
-
     //CREATE
     public void insertTodo(Todo todo) {
 
@@ -38,12 +36,7 @@ public class TodoDatabaseAdapter {
         values.put(todoDatabaseHelper.KEY_DATE, todoManager.getDateStr(todo.getDate())); // Todo date
         values.put(todoDatabaseHelper.KEY_DATE_MIL, todoManager.convertDateToMilliseconds(todoManager.getDateStr(todo.getDate()))); // date in milliseconds
 
-        Log.d("TAG", "todo added: " + String.valueOf(todo.getId()));
-
-
        db.insert(todoDatabaseHelper.TABLE_TODOS, null, values);
-
-
     }
 
 
@@ -54,7 +47,6 @@ public class TodoDatabaseAdapter {
         List<Todo> todos = new ArrayList<Todo>();
 
         String [] cols = {todoDatabaseHelper.KEY_ID, todoDatabaseHelper.KEY_NAME, todoDatabaseHelper.KEY_STATUS, todoDatabaseHelper.KEY_PRIORITY, todoDatabaseHelper.KEY_DATE};
-
 
         Cursor cursor = db.query(todoDatabaseHelper.TABLE_TODOS, cols, null, null,null, null, todoDatabaseHelper.KEY_DATE_MIL+" ASC");
 
@@ -80,7 +72,6 @@ public class TodoDatabaseAdapter {
         }
 
         return todos;
-
     }
 
     //READ - query 1 specific data
@@ -113,9 +104,7 @@ public class TodoDatabaseAdapter {
 
             } while (cursor.moveToNext());
         }
-        Log.d("TAG", "todo selected: " + String.valueOf(todo.getId()));
         return todo;
-
     }
 
     //UPDATE
@@ -134,14 +123,10 @@ public class TodoDatabaseAdapter {
         String[] whereArgs = {String.valueOf(todo.getId())};
 
         db.update(todoDatabaseHelper.TABLE_TODOS, values, whereClause, whereArgs);
-
-       Log.d("TAG", "todo updated: " + String.valueOf(todo.getId()));
-
         db.close();
-
     }
 
-    // Deleting single contact
+    //DELETE
     public void deleteTodo(Todo todo) {
         SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
 
@@ -149,28 +134,18 @@ public class TodoDatabaseAdapter {
         String[] whereArgs = {String.valueOf(todo.getId())};
 
         db.delete(todoDatabaseHelper.TABLE_TODOS, whereClause, whereArgs);
-
-        Log.d("TAG", "todo deteled: " + String.valueOf(todo.getId()));
-
         db.close();
     }
 
-
-    //DELETE
 
     //function to return column index - less chance of error
     public int getColIndex(Cursor cursor, String colName) {
 
         int index =  cursor.getColumnIndex(colName);
-
         return  index;
-
     }
 
-
     //get DATA count
-
-    // Getting contacts Count
     public int getTodosCount() {
 
         String countQuery = "SELECT  * FROM " + todoDatabaseHelper.TABLE_TODOS;
@@ -181,7 +156,6 @@ public class TodoDatabaseAdapter {
         return cnt;
 
     }
-
 
     class TodoDatabaseHelper extends SQLiteOpenHelper {
 
@@ -225,7 +199,6 @@ public class TodoDatabaseAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-
             try {
                 db.execSQL(CREATE_TABLE_TODOS);
                 Toast.makeText(context,"Success: table "+ TABLE_TODOS+" successfully created", Toast.LENGTH_LONG).show();
@@ -233,12 +206,10 @@ public class TodoDatabaseAdapter {
             } catch (NumberFormatException e) {
                 Toast.makeText(context, "Error: table creation failed" , Toast.LENGTH_LONG).show();
             }
-
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
             try {
                 db.execSQL(DROP_TABLE_TODOS);
                 Toast.makeText(context,"Success: table "+ "Success: table "+ TABLE_TODOS+" successfully deleted", Toast.LENGTH_LONG).show();
@@ -246,7 +217,6 @@ public class TodoDatabaseAdapter {
             } catch (NumberFormatException e) {
                 Toast.makeText(context, "Error: table drop failed" , Toast.LENGTH_LONG).show();
             }
-
         }
     }
 

@@ -10,11 +10,6 @@ import android.widget.ImageView;
 
 public class SplashScreen extends Activity {
 
-    interface MyCallback {
-        void callbackCall();
-    }
-
-
     /** Duration of wait **/
     private final int SPLASH_DISPLAY_LENGTH = 2000;
     private final int ANIMATION_DELAY_LENGTH = 1200;
@@ -25,7 +20,12 @@ public class SplashScreen extends Activity {
         super.onCreate(icicle);
         setContentView(R.layout.activity_splash_screen);
 
-        /* New Handler to start the Menu-Activity
+        AnimationHandlers();
+    }
+
+    public void AnimationHandlers() {
+
+         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
         new Handler().postDelayed(new Runnable(){
             @Override
@@ -37,7 +37,7 @@ public class SplashScreen extends Activity {
             }
         }, SPLASH_DISPLAY_LENGTH);
 
-
+        /* New Handler to start animation after a few milliseconds delay.*/
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
@@ -45,7 +45,6 @@ public class SplashScreen extends Activity {
                 AnimateZoom();
             }
         }, ANIMATION_DELAY_LENGTH);
-
     }
 
     public void AnimateZoom(){
