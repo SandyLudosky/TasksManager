@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
             todo.setId(uid);
             deleteTodo(todo);
         }
-
+        
         adapter.notifyDataSetChanged();
     }
 }

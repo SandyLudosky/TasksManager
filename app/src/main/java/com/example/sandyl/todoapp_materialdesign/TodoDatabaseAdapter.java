@@ -47,8 +47,8 @@ public class TodoDatabaseAdapter {
         List<Todo> todos = new ArrayList<Todo>();
 
         String [] cols = {todoDatabaseHelper.KEY_ID, todoDatabaseHelper.KEY_NAME, todoDatabaseHelper.KEY_STATUS, todoDatabaseHelper.KEY_PRIORITY, todoDatabaseHelper.KEY_DATE};
-
-        Cursor cursor = db.query(todoDatabaseHelper.TABLE_TODOS, cols, null, null,null, null, todoDatabaseHelper.KEY_DATE_MIL+" ASC");
+        String orderBy = todoDatabaseHelper.KEY_STATUS  + " ASC, " + todoDatabaseHelper.KEY_DATE_MIL + " ASC";
+        Cursor cursor = db.query(todoDatabaseHelper.TABLE_TODOS, cols, null, null,null, null, orderBy);
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
