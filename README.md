@@ -23,18 +23,18 @@ The following **optional** features are implemented:
 
 * [x] Persist the todo items [into SQLite](http://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite) instead of a text file
 * [x] Improve style of the todo items in the list [using a recycler view](https://guides.codepath.com/android/using-the-recyclerview)
-* [x] Add support for completion due dates of todo items:  (and display within listview item) (due today, past due)
-* [x] Add support with RadioGroupButton for selecting the priority of each todo item (and display in listview item)
-* [x] Add support with Spinner for selecting status of each todo item (active, done) (and display in listview item)
+* [x] Add support for completion due dates of todo items:  (and display within listview item) (due today, overdue)
+* [x] Add support with RadioGroupButton for selecting the priority level of each todo item (low, medium, high)
+* [x] Add support with SpinnerView for selecting status of each todo item (active, done)
 * [x] Tweak the style improving the UI / UX, play with colors, images or backgrounds
 
 The following **additional** features are implemented:
 
-* [x] Querying with “ASC” to sort tasks by date in listview
-* [x] List anything else that you can get done to improve the app functionality!
+* [x] Querying with “ASC” *orderby* to sort tasks by date in listview
 * [x] Added Material Design and Floating Action Button library support
 * [x] Applying Color coding for priority levels : low, medium and high
-* [x] Adding Launch screen
+* [x] Custom Spinner Style
+* [x] Added Launch screen and basic animation
 
 
 ## Video Walkthrough 
